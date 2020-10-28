@@ -4,7 +4,7 @@ EELAYER END
 $Descr A3 16535 11693
 encoding utf-8
 Sheet 1 1
-Title "EproSim"
+Title "ROsiM"
 Date ""
 Rev ""
 Comp ""
