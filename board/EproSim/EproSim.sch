@@ -2056,12 +2056,12 @@ Text Label 3550 2500 2    50   ~ 0
 $Comp
 L 74xx:74LS32 U15
 U 3 1 61E4DC33
-P 4900 8550
-F 0 "U15" H 4900 8875 50  0000 C CNN
-F 1 "74HC32" H 4900 8784 50  0000 C CNN
-F 2 "" H 4900 8550 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 4900 8550 50  0001 C CNN
-	3    4900 8550
+P 7150 7450
+F 0 "U15" H 7150 7775 50  0000 C CNN
+F 1 "74HC32" H 7150 7684 50  0000 C CNN
+F 2 "" H 7150 7450 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 7150 7450 50  0001 C CNN
+	3    7150 7450
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -2076,17 +2076,12 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 4900 9400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5200 8550 5400 8550
-Wire Wire Line
 	5200 9400 5400 9400
-NoConn ~ 5400 8550
 NoConn ~ 5400 9400
 Wire Wire Line
-	4600 8450 4550 8450
+	6850 7350 6800 7350
 Wire Wire Line
-	4550 8450 4550 8550
-Wire Wire Line
-	4550 8650 4600 8650
+	6800 7550 6850 7550
 Wire Wire Line
 	4600 9300 4550 9300
 Wire Wire Line
@@ -2098,22 +2093,6 @@ Wire Wire Line
 Connection ~ 4550 9400
 Wire Wire Line
 	4550 9400 4550 9500
-Wire Wire Line
-	4550 8550 4450 8550
-Connection ~ 4550 8550
-Wire Wire Line
-	4550 8550 4550 8650
-$Comp
-L power:GND #PWR?
-U 1 1 61FD9527
-P 4450 8550
-F 0 "#PWR?" H 4450 8300 50  0001 C CNN
-F 1 "GND" H 4455 8377 50  0000 C CNN
-F 2 "" H 4450 8550 50  0001 C CNN
-F 3 "" H 4450 8550 50  0001 C CNN
-	1    4450 8550
-	0    1    1    0   
-$EndComp
 $Comp
 L power:GND #PWR?
 U 1 1 6200825B
@@ -2576,9 +2555,6 @@ Text Label 8500 4000 0    50   ~ 0
 SRAM_D6
 Text Label 8500 4100 0    50   ~ 0
 SRAM_D7
-Wire Wire Line
-	2900 3500 3200 3500
-NoConn ~ 3200 3500
 Text Label 10550 3400 2    50   ~ 0
 EXT_D0
 Text Label 10550 3500 2    50   ~ 0
@@ -3331,4 +3307,34 @@ Wire Wire Line
 	14250 8850 14400 8850
 Wire Wire Line
 	14250 8950 14400 8950
+Text Label 8400 7450 2    50   ~ 0
+~EXT_RESET
+Wire Wire Line
+	6800 7350 6800 7450
+Wire Wire Line
+	6800 7450 6050 7450
+Connection ~ 6800 7450
+Wire Wire Line
+	6800 7450 6800 7550
+$Comp
+L Diode:1N4148 D3
+U 1 1 67601DD0
+P 7700 7450
+F 0 "D3" H 7700 7667 50  0000 C CNN
+F 1 "1N4148" H 7700 7576 50  0000 C CNN
+F 2 "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal" H 7700 7275 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/1N4148_1N4448.pdf" H 7700 7450 50  0001 C CNN
+	1    7700 7450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7550 7450 7450 7450
+Wire Wire Line
+	7850 7450 8400 7450
+Text Label 6050 7450 0    50   ~ 0
+MCU_RESET
+Wire Wire Line
+	2900 3500 3400 3500
+Text Label 3400 3500 2    50   ~ 0
+MCU_RESET
 $EndSCHEMATC
