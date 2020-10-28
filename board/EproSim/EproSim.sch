@@ -3211,22 +3211,22 @@ Wire Wire Line
 	14250 8850 14400 8850
 Wire Wire Line
 	14250 8950 14400 8950
-Text Label 5900 7450 2    50   ~ 0
+Text Label 6400 7900 2    50   ~ 0
 ~EXT_RESET
 $Comp
 L Diode:1N4148 D4
 U 1 1 67601DD0
-P 5200 7450
-F 0 "D4" H 5200 7667 50  0000 C CNN
-F 1 "1N4148" H 5200 7576 50  0000 C CNN
-F 2 "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal" H 5200 7275 50  0001 C CNN
-F 3 "https://assets.nexperia.com/documents/data-sheet/1N4148_1N4448.pdf" H 5200 7450 50  0001 C CNN
-	1    5200 7450
+P 5700 7900
+F 0 "D4" H 5700 8117 50  0000 C CNN
+F 1 "1N4148" H 5700 8026 50  0000 C CNN
+F 2 "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal" H 5700 7725 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/1N4148_1N4448.pdf" H 5700 7900 50  0001 C CNN
+	1    5700 7900
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5350 7450 5900 7450
-Text Label 4300 7450 0    50   ~ 0
+	5850 7900 6400 7900
+Text Label 4400 7900 0    50   ~ 0
 MCU_RESET
 Wire Wire Line
 	2900 3500 3400 3500
@@ -3711,7 +3711,7 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 7200 7300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4300 7450 5050 7450
+	4400 7900 5150 7900
 Wire Wire Line
 	8450 7400 8850 7400
 Text Label 8850 7400 2    50   ~ 0
@@ -3788,4 +3788,17 @@ F 3 "~" H 11200 7150 50  0001 C CNN
 $EndComp
 Text Label 10350 7200 0    50   ~ 0
 ~EXT_RESET
+$Comp
+L Device:R_Small R24
+U 1 1 6F879023
+P 5250 7900
+F 0 "R24" V 5300 8050 50  0000 C CNN
+F 1 "680" V 5300 7700 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" H 5250 7900 50  0001 C CNN
+F 3 "~" H 5250 7900 50  0001 C CNN
+	1    5250 7900
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	5350 7900 5550 7900
 $EndSCHEMATC
