@@ -967,8 +967,6 @@ Wire Wire Line
 	2900 2100 3400 2100
 Text Label 3400 2100 2    50   ~ 0
 SIPO_RCLK
-Wire Wire Line
-	2900 2200 3400 2200
 Text Label 3400 2200 2    50   ~ 0
 ~SIPO_OE
 Wire Wire Line
@@ -1949,8 +1947,6 @@ Text Label 10950 1900 0    50   ~ 0
 SRAM_D14
 Text Label 10950 1800 0    50   ~ 0
 SRAM_D15
-Wire Wire Line
-	2900 2300 3400 2300
 Wire Wire Line
 	14250 1000 15100 1000
 Wire Wire Line
@@ -3816,4 +3812,52 @@ Wire Wire Line
 	10800 8150 10800 8250
 Wire Wire Line
 	10800 7650 10800 7750
+$Comp
+L Device:R_Small R25
+U 1 1 70466D51
+P 3750 2200
+F 0 "R25" V 3800 2350 50  0000 C CNN
+F 1 "4.7K" V 3800 2000 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" H 3750 2200 50  0001 C CNN
+F 3 "~" H 3750 2200 50  0001 C CNN
+	1    3750 2200
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R_Small R26
+U 1 1 7046B197
+P 3750 2300
+F 0 "R26" V 3800 2450 50  0000 C CNN
+F 1 "4.7K" V 3800 2100 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" H 3750 2300 50  0001 C CNN
+F 3 "~" H 3750 2300 50  0001 C CNN
+	1    3750 2300
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	2900 2200 3650 2200
+Wire Wire Line
+	2900 2300 3650 2300
+Wire Wire Line
+	3850 2200 4100 2200
+Wire Wire Line
+	4100 2200 4100 2250
+Wire Wire Line
+	4100 2300 3850 2300
+$Comp
+L power:VCC #PWR?
+U 1 1 706371E3
+P 4200 2250
+F 0 "#PWR?" H 4200 2100 50  0001 C CNN
+F 1 "VCC" H 4217 2423 50  0000 C CNN
+F 2 "" H 4200 2250 50  0001 C CNN
+F 3 "" H 4200 2250 50  0001 C CNN
+	1    4200 2250
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	4200 2250 4100 2250
+Connection ~ 4100 2250
+Wire Wire Line
+	4100 2250 4100 2300
 $EndSCHEMATC
