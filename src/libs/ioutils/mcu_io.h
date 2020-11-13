@@ -8,7 +8,7 @@
  *  PB1 -> '595 CLK    (OUT)
  *  PB2 -> '595 /RESET (OUT)  
  *  PC0 -> '595 RCLK   (OUT)
- *  PC1 -> '595 /OE    (OUT)
+ *  PC1 -> '595 /OE    (OUT, external pull-up) 
  * 
  *  PD2 -> '166 /CLR (OUT)
  *  PD3 -> '166 PE   (OUT)
@@ -17,8 +17,13 @@
  *  PD6 -> '166 SER  (IN)
  * 
  *  PB5 -> Activity LED (OUT)
- *  PC4 -> 20pin socket LED (OUT)
- *  PC5 -> 24pin socket LED (OUT)
+ * 
+ *  PD7 -> External Reset (OUT)
+ * 
+ *  PC2 -> External-to-SRAM drivers /OE (OUT, external pull-up)
+ *  PC3 -> SRAM /CE (OUT, external pull-up)
+ *  PC4 -> SRAM /OE (OUT)
+ *  PC5 -> SRAM /WE (OUT)
  * 
  */
 
@@ -31,12 +36,6 @@
 #define ACT_LEDPIN   PINB
 #define ACT_LEDDDR   DDRB
 #define ACT_LED_P    5 // PB5 (out)
-
-#define SOCK_LEDPORT PORTC
-#define SOCK_LEDPINC PINC
-#define SOCK_LEDDDR  DDRC
-#define SOCK_LED_P1  4 // PC5 (20-pin PAL, out)
-#define SOCK_LED_P2  5 // PC6 (24-pin PAL, out)
 
 #define PISO_PORT  PORTD
 #define PISO_PIN   PIND

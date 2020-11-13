@@ -29,7 +29,7 @@ static char pkt_buffer[PKT_BUFFER_SIZE];
 
 static uint8_t receive_pkt(void);
 
-void remote_control_analyze(void) {
+void remote_control(void) {
     uart_puts("REMOTE_CONTROL_ENABLED\n");
 
     ioutils_write(0);
