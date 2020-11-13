@@ -28,8 +28,6 @@ static uint8_t receive_pkt(void);
 void remote_control(void) {
     uart_puts("REMOTE_CONTROL_ENABLED\n");
 
-    ioutils_write(0);
-
     while(1) {
         if(receive_pkt()) {
             ioutils_setLED(1);
