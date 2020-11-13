@@ -11,7 +11,7 @@ void io_init() {
 
     // Configure the SRAM controls
     SRAM_DDR |= _BV(SRAM_CE) | _BV(SRAM_EXTOE) | _BV(SRAM_OE) | _BV(SRAM_WE); // All outputs
-    SRAM_PORT |= _BV(SRAM_CE) | _BV(SRAM_EXTOE) | _BV(SRAM_OE) | _BV(SRAM_WE); // Set them all to high
+    SRAM_PORT |= _BV(SRAM_CE) | _BV(SRAM_EXTOE) | _BV(SRAM_OE) | _BV(SRAM_WE); // Set them all to high, disabling them
 
     // Config the SIPO shifter ports
     SIPO_DDR_1 |= (_BV(SIPO_1_SER) | _BV(SIPO_1_CLK) | _BV(SIPO_1_RST)); // Configure these pins as output
@@ -22,10 +22,4 @@ void io_init() {
     PISO_DDR |= (_BV(PISO_CLK) | _BV(PISO_CLR) | _BV(PISO_PE) | _BV(PISO_CE)); // Outputs
     PISO_DDR  &= ~_BV(PISO_SER); // Inputs
     PISO_PORT &= ~_BV(PISO_SER); // Disable pullup on input
-
-    // Set the other ports for PAL communication as IN or OUT
-    DDRC &= ~(_BV(2) | _BV(3)); // PC2,3 as inputs
-    DDRD &= ~_BV(7); // PD7 as input
-    PORTC |= (_BV(2) | _BV(3)); // Enable PC2-5 internal pull-ups
-    PORTD |= _BV(7); // Enable PD7 internal pull-up
 }
