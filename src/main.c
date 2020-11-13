@@ -9,18 +9,20 @@
 
 #include <util/delay.h>
 
-#include <pal_types/remote_control.h>
+#include <interface/remote_control.h>
 
 #include <ioutils/mcu_io.h>
 #include <ioutils/ioutils.h>
+
+#include <utils/millis.h>
 
 #include <uart/uart.h> 
 #include <shifter/sipo_shifter.h>
 #include <shifter/piso_shifter.h>
 
 
-#define VERSION "0.1.2"
-#define SOFT_HEADER "\nDuPAL - " VERSION "\n\n"
+#define VERSION "0.0.1"
+#define SOFT_HEADER "\nROsiM - " VERSION "\n\n"
 
 int main(void) {
 #if defined (__AVR_ATmega328P__)
@@ -42,31 +44,27 @@ int main(void) {
     sipo_shifter_init();
     piso_shifter_init();
     
+    // Initialize the millisecond library
+    millis_init();
+
     // Enable interrupts
     sei();
 
-
     uart_puts(SOFT_HEADER); // Print the header
 
-    void (*pal_analyzer)(void) = NULL;
+    ioutils_setLED(0); // Turn off the activity LED
 
-    ioutils_setLED(ACT_LED, 0);
-
-    pal_analyzer = remote_control_analyze;
-    (*pal_analyzer)();
+    remote_control();
 
     uart_puts("DONE.\n");
 
     // We're done, blink the led at 1Hz and wait for a watchdog reset
     while(1) {
         _delay_ms(1000);
-        ioutils_setLED(ACT_LED, 0);
+        ioutils_setLED(0);
         _delay_ms(1000);
     }
 
 
     return 0;
-}
-
-ISR(INT1_vect) { // Manage INT1
 }

@@ -64,6 +64,14 @@
 #define CRESET_DDR  DDRD
 #define CRESET_RST  7 // PD7 (out)
 
+#define SRAM_PORT   PORTC
+#define SRAM_PIN    PINC
+#define SRAM_DDR    DDRC
+#define SRAM_EXTOE  2 // PC2
+#define SRAM_CE     3 // PC3
+#define SRAM_OE     4 // PC4
+#define SRAM_WE     5 // PC5
+
 void io_init(void);
 
 #endif /* _MCU_IO_H_ */
