@@ -56,8 +56,13 @@
 #define SIPO_PORT_2 PORTC
 #define SIPO_PIN_2  PINC
 #define SIPO_DDR_2  DDRC
-#define SIPO_2_RCLK 0 // PC0
-#define SIPO_2_OE   1 // PC1
+#define SIPO_2_RCLK 0 // PC0 (out)
+#define SIPO_2_OE   1 // PC1 (out)
+
+#define CRESET_PORT PORTD
+#define CRESET_PIN  PIND
+#define CRESET_DDR  DDRD
+#define CRESET_RST  7 // PD7 (out)
 
 void io_init(void);
 
