@@ -9,13 +9,16 @@
 #include <utils/strutils.h>
 #include <ioutils/ioutils.h>
 
+#include <shifter/sipo_shifter.h>
+#include <shifter/piso_shifter.h>
+
 #define PKT_BUFFER_SIZE 32
 #define PKT_START '>'
 #define PKT_END '<'
 #define RESP_START '['
 #define RESP_END ']'
 
-#define SIPO_BUF_SIZE 5
+#define SIPO_BUFFER_SIZE 5
 
 #define CMD_RESET 'K' // Reset the board
 #define CMD_MODEL 'M' // Returns model of the board
@@ -37,16 +40,27 @@
 static char pkt_buffer[PKT_BUFFER_SIZE];
 static char resp_buffer[PKT_BUFFER_SIZE];
 
-static uint8_t iosw_state = 0;
-static uint8_t erst_state = 0;
-static uint8_t rwsw_state = 0;
+static uint8_t iosw_state = 0; // 0 -> internal, 1 -> external
+static uint8_t rwsw_state = 0; // 0 -> read, 1 -> write
+static uint8_t erst_state = 0; // 0 -> inactive, 1 -> active
 static uint32_t address = 0;
 
-static uint8_t sipo_buffer[SIPO_BUF_SIZE];
+static uint8_t sipo_buffer[SIPO_BUFFER_SIZE];
 
 static uint8_t receive_pkt(void);
 
 void remote_control(void) {
+    memset(sipo_buffer, 0, SIPO_BUFFER_SIZE);
+
+    // Setting up the initial state
+    ioutils_setEXT_OE(1); // Disable external->internal drivers
+    sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE); // Start with everything at 0
+    ioutils_setSRAM_WE(1); // Disable /WE on the SRAMs: read mode
+    ioutils_setSRAM_CE(0); // Enable /CE on the SRAMs
+    ioutils_setSRAM_OE(0); // Enable /OE on the SRAMs
+    sipo_shifter_OE(0); // Enable the outputs of the SIPO shifters
+    ioutils_setRESET(1); // Disable the external reset line 
+
     uart_puts("REMOTE_CONTROL_ENABLED\n");
 
     while(1) {
@@ -65,8 +79,14 @@ void remote_control(void) {
                         resp_buffer[buf_idx++] = '[';
                         resp_buffer[buf_idx++] = CMD_VIEW;
                         resp_buffer[buf_idx++] = ' ';
+                        strutils_u32_to_str(resp_buffer, address); buf_idx += 8;
+                        resp_buffer[buf_idx++] = ' ';
+                        strutils_u8_to_str(resp_buffer, (iosw_state | (rwsw_state << 1) | (erst_state << 2))); buf_idx += 2;
                         resp_buffer[buf_idx++] = ']';
                         resp_buffer[buf_idx++] = '\n';
+                        resp_buffer[buf_idx++] = 0;
+
+                        uart_puts(resp_buffer);
                     }
                     break;
                 default:
