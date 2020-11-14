@@ -79,9 +79,9 @@ void remote_control(void) {
                         resp_buffer[buf_idx++] = '[';
                         resp_buffer[buf_idx++] = CMD_VIEW;
                         resp_buffer[buf_idx++] = ' ';
-                        strutils_u32_to_str(resp_buffer, address); buf_idx += 8;
+                        strutils_u32_to_str(resp_buffer + buf_idx, address); buf_idx += 8;
                         resp_buffer[buf_idx++] = ' ';
-                        strutils_u8_to_str(resp_buffer, (iosw_state | (rwsw_state << 1) | (erst_state << 2))); buf_idx += 2;
+                        strutils_u8_to_str(resp_buffer + buf_idx, (iosw_state | (rwsw_state << 1) | (erst_state << 2))); buf_idx += 2;
                         resp_buffer[buf_idx++] = ']';
                         resp_buffer[buf_idx++] = '\n';
                         resp_buffer[buf_idx++] = 0;
