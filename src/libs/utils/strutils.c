@@ -30,6 +30,18 @@ uint8_t strutils_str_to_u8(char *str) {
     return res;
 }
 
+uint16_t strutils_str_to_u16(char *str) {
+    uint16_t res = 0;
+    uint8_t diff = 0;
+
+    for(uint8_t idx = 0; idx < 4; idx++) {
+        diff = calc_asciiToBinDiff(str[idx]);
+        res |= (((uint16_t)(str[idx] - diff)) << (12-(4 * idx)));
+    }
+
+    return res;
+}
+
 uint32_t strutils_str_to_u32(char *str) {
     uint32_t res = 0;
     uint8_t diff = 0;
