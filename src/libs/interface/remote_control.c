@@ -90,11 +90,11 @@ void remote_control(void) {
                         resp_buffer[buf_idx++] = 0;
 
                         if(iosw_state) uart_puts(CMD_INVALID); // If in external mode, won't allow the switch between read and write
-                        else if (pkt_buffer[2] == '0') { // Enable write
+                        else if (pkt_buffer[2] == '0') { // Enable write on SRAM
                             ioutils_setSRAM_WE(0);
                             rwsw_state = 1;
                             uart_puts(resp_buffer);
-                        } else if (pkt_buffer[2] == '1') {
+                        } else if (pkt_buffer[2] == '1') { // Disable write on SRAM
                             ioutils_setSRAM_WE(1);
                             rwsw_state = 0;
                             uart_puts(resp_buffer);
@@ -136,10 +136,11 @@ void remote_control(void) {
                         else if (pkt_buffer[2] == '0') { // External mode enabled
                             sipo_shifter_OE(1); // Disable the internal SIPO shifters
                             ioutils_setEXT_OE(0); // Enable external -> internal drivers
+                            ioutils_setSRAM_WE(1); // Make double-sure that the write mode is disabled
                             ioutils_setSRAM_CE(0); // Enable the SRAM
                             iosw_state = 1; 
                             uart_puts(resp_buffer);
-                        } else if (pkt_buffer[2] == '1') { 
+                        } else if (pkt_buffer[2] == '1') { // Internal mode
                             ioutils_setSRAM_CE(1); // Disable the SRAM
                             ioutils_setEXT_OE(1); // Disable external -> internal drivers
                             sipo_shifter_OE(0); // Enable the SIPO shifters
