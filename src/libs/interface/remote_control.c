@@ -35,6 +35,7 @@
 #define RESP_MODEL "[M 01]\n"
 
 static char pkt_buffer[PKT_BUFFER_SIZE];
+static char resp_buffer[PKT_BUFFER_SIZE];
 
 static uint8_t iosw_state = 0;
 static uint8_t erst_state = 0;
@@ -59,6 +60,15 @@ void remote_control(void) {
                     break;
                 case CMD_RESET:
                     while(1); // Will reset the program via watchdog
+                case CMD_VIEW: {
+                        uint8_t buf_idx = 0;
+                        resp_buffer[buf_idx++] = '[';
+                        resp_buffer[buf_idx++] = CMD_VIEW;
+                        resp_buffer[buf_idx++] = ' ';
+                        resp_buffer[buf_idx++] = ']';
+                        resp_buffer[buf_idx++] = '\n';
+                    }
+                    break;
                 default:
                     uart_puts(CMD_ERROR);
                     break;
