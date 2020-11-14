@@ -59,7 +59,7 @@ void remote_control(void) {
     ioutils_setEXT_OE(1); // Disable external->internal drivers
     sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE); // Start with everything at 0
     ioutils_setSRAM_WE(1); // Disable /WE on the SRAMs: read mode
-    ioutils_setSRAM_CE(); // Disable /CE on the SRAMs
+    ioutils_setSRAM_CE(1); // Disable /CE on the SRAMs
     ioutils_setSRAM_OE(0); // Enable /OE on the SRAMs
     sipo_shifter_OE(0); // Enable the outputs of the SIPO shifters
     ioutils_setRESET(1); // Disable the external reset line 
@@ -128,6 +128,7 @@ void remote_control(void) {
                         else {
                             sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
                             ioutils_setSRAM_CE(0); // Enable the SRAM
+                            _delay_us(1);
                             uint16_t data = piso_shifter_get();
                             ioutils_setSRAM_CE(1); // Disable the SRAM
 
@@ -145,7 +146,19 @@ void remote_control(void) {
                     }
                     break;
                 case CMD_ADDRESS: {
+                        address = strutils_str_to_u32(resp_buffer+2); address &= 0x7FFFF;
+                        address_to_sipo_buffer(address);
 
+                        uint8_t buf_idx = 0;
+                        resp_buffer[buf_idx++] = '[';
+                        resp_buffer[buf_idx++] = CMD_ADDRESS;
+                        resp_buffer[buf_idx++] = ' ';
+                        strutils_u32_to_str(resp_buffer + buf_idx, address); buf_idx += 8;
+                        resp_buffer[buf_idx++] = ']';
+                        resp_buffer[buf_idx++] = '\n';
+                        resp_buffer[buf_idx++] = 0;
+
+                        uart_puts(resp_buffer);
                     }
                     break;
                 case CMD_ADRINCR: {
