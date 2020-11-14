@@ -59,7 +59,7 @@ void remote_control(void) {
     ioutils_setEXT_OE(1); // Disable external->internal drivers
     sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE); // Start with everything at 0
     ioutils_setSRAM_WE(1); // Disable /WE on the SRAMs: read mode
-    ioutils_setSRAM_CE(0); // Enable /CE on the SRAMs
+    ioutils_setSRAM_CE(); // Disable /CE on the SRAMs
     ioutils_setSRAM_OE(0); // Enable /OE on the SRAMs
     sipo_shifter_OE(0); // Enable the outputs of the SIPO shifters
     ioutils_setRESET(1); // Disable the external reset line 
@@ -77,11 +77,59 @@ void remote_control(void) {
                     break;
                 case CMD_RESET:
                     while(1); // Will reset the program via watchdog
+                case CMD_RWSW: {
+                        uint8_t buf_idx = 0;
+                        resp_buffer[buf_idx++] = '[';
+                        resp_buffer[buf_idx++] = CMD_RWSW;
+                        resp_buffer[buf_idx++] = ' ';
+                        resp_buffer[buf_idx++] = pkt_buffer[2];
+                        resp_buffer[buf_idx++] = ']';
+                        resp_buffer[buf_idx++] = '\n';
+                        resp_buffer[buf_idx++] = 0;
+
+                        if(iosw_state) uart_puts(CMD_INVALID); // If in external mode, won't allow the switch between read and write
+                        else if (pkt_buffer[2] == '0') { 
+                            ioutils_setSRAM_WE(0);
+                            rwsw_state = 1;
+                            uart_puts(resp_buffer);
+                        } else if (pkt_buffer[2] == '1') {
+                            ioutils_setSRAM_WE(1);
+                            rwsw_state = 0;
+                            uart_puts(resp_buffer);
+                        } else uart_puts(CMD_ERROR); 
+                    }
+                    break;
+                case CMD_IOSW: {
+                        uint8_t buf_idx = 0;
+                        resp_buffer[buf_idx++] = '[';
+                        resp_buffer[buf_idx++] = CMD_IOSW;
+                        resp_buffer[buf_idx++] = ' ';
+                        resp_buffer[buf_idx++] = pkt_buffer[2];
+                        resp_buffer[buf_idx++] = ']';
+                        resp_buffer[buf_idx++] = '\n';
+                        resp_buffer[buf_idx++] = 0;
+
+                        if(rwsw_state) uart_puts(CMD_INVALID); // If in write mode, won't allow the switch between internal and external
+                        else if (pkt_buffer[2] == '0') { 
+                            ioutils_setEXT_OE(0);
+                            ioutils_setSRAM_CE(0);
+                            iosw_state = 1; 
+                            uart_puts(resp_buffer);
+                        } else if (pkt_buffer[2] == '1') { 
+                            ioutils_setEXT_OE(1);
+                            ioutils_setSRAM_CE(1);
+                            iosw_state = 0; 
+                            uart_puts(resp_buffer);
+                        } else uart_puts(CMD_ERROR); 
+                    }
+                    break;
                 case CMD_READ: {
                         if(rwsw_state || iosw_state) uart_puts(CMD_INVALID); // Must be internal with write disabled
                         else {
                             sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
+                            ioutils_setSRAM_CE(0); // Enable the SRAM
                             uint16_t data = piso_shifter_get();
+                            ioutils_setSRAM_CE(1); // Disable the SRAM
 
                             uint8_t buf_idx = 0;
                             resp_buffer[buf_idx++] = '[';
@@ -94,6 +142,10 @@ void remote_control(void) {
 
                             uart_puts(resp_buffer);                            
                         }
+                    }
+                    break;
+                case CMD_ADDRESS: {
+
                     }
                     break;
                 case CMD_ADRINCR: {
