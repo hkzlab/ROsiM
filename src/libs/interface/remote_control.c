@@ -64,7 +64,7 @@ void remote_control(void) {
     ioutils_setSRAM_CE(1); // Disable /CE on the SRAMs
     ioutils_setSRAM_OE(0); // Enable /OE on the SRAMs
     sipo_shifter_OE(0); // Enable the outputs of the SIPO shifters
-    ioutils_setRESET(1); // Disable the external reset line 
+    ioutils_setRESET(0); // Disable the external reset line 
 
     uart_puts("REMOTE_CONTROL_ENABLED\n");
 
@@ -111,13 +111,13 @@ void remote_control(void) {
                         resp_buffer[buf_idx++] = '\n';
                         resp_buffer[buf_idx++] = 0;
 
-                        if (pkt_buffer[2] == '0') {  // Reset enabled
+                        if (pkt_buffer[2] == '0') {  // Reset disabled
                             ioutils_setRESET(0);
-                            erst_state = 1;
-                            uart_puts(resp_buffer);
-                        } else if (pkt_buffer[2] == '1') { // Reset disabled
-                            ioutils_setRESET(1);
                             erst_state = 0;
+                            uart_puts(resp_buffer);
+                        } else if (pkt_buffer[2] == '1') { // Reset enabled
+                            ioutils_setRESET(1);
+                            erst_state = 1;
                             uart_puts(resp_buffer);
                         } else uart_puts(CMD_ERROR); 
                     }
