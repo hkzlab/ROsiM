@@ -111,11 +111,11 @@ void remote_control(void) {
                         resp_buffer[buf_idx++] = '\n';
                         resp_buffer[buf_idx++] = 0;
 
-                        if (pkt_buffer[2] == '0') {  // Reset disabled
+                        if (pkt_buffer[2] == '1') {  // Reset disabled
                             ioutils_setRESET(0);
                             erst_state = 0;
                             uart_puts(resp_buffer);
-                        } else if (pkt_buffer[2] == '1') { // Reset enabled
+                        } else if (pkt_buffer[2] == '0') { // Reset enabled
                             ioutils_setRESET(1);
                             erst_state = 1;
                             uart_puts(resp_buffer);
