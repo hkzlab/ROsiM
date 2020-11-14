@@ -111,7 +111,7 @@ void remote_control(void) {
                         resp_buffer[buf_idx++] = '\n';
                         resp_buffer[buf_idx++] = 0;
 
-                        else if (pkt_buffer[2] == '0') { 
+                        if (pkt_buffer[2] == '0') { 
                             ioutils_setRESET(0);
                             erst_state = 1;
                             uart_puts(resp_buffer);
