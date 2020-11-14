@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <util/delay.h>
+
 #include <uart/uart.h>
 #include <utils/strutils.h>
 #include <ioutils/ioutils.h>
@@ -99,6 +101,27 @@ void remote_control(void) {
                         } else uart_puts(CMD_ERROR); 
                     }
                     break;
+                case CMD_ERST: {
+                        uint8_t buf_idx = 0;
+                        resp_buffer[buf_idx++] = '[';
+                        resp_buffer[buf_idx++] = CMD_ERST;
+                        resp_buffer[buf_idx++] = ' ';
+                        resp_buffer[buf_idx++] = pkt_buffer[2];
+                        resp_buffer[buf_idx++] = ']';
+                        resp_buffer[buf_idx++] = '\n';
+                        resp_buffer[buf_idx++] = 0;
+
+                        else if (pkt_buffer[2] == '0') { 
+                            ioutils_setRESET(0);
+                            erst_state = 1;
+                            uart_puts(resp_buffer);
+                        } else if (pkt_buffer[2] == '1') {
+                            ioutils_setRESET(1);
+                            erst_state = 0;
+                            uart_puts(resp_buffer);
+                        } else uart_puts(CMD_ERROR); 
+                    }
+                    break;
                 case CMD_IOSW: {
                         uint8_t buf_idx = 0;
                         resp_buffer[buf_idx++] = '[';
@@ -145,8 +168,31 @@ void remote_control(void) {
                         }
                     }
                     break;
+                case CMD_WRITE: {
+                            if(!rwsw_state || iosw_state) uart_puts(CMD_INVALID);
+                            else {
+                                uint16_t data = strutils_str_to_u16(pkt_buffer+2);
+                                data_to_sipo_buffer(data);
+                                sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
+                                ioutils_setSRAM_CE(0); // Enable the SRAM
+                                _delay_us(1);
+                                ioutils_setSRAM_CE(1); // Disable the SRAM
+
+                                uint8_t buf_idx = 0;
+                                resp_buffer[buf_idx++] = '[';
+                                resp_buffer[buf_idx++] = CMD_WRITE;
+                                resp_buffer[buf_idx++] = ' ';
+                                strutils_u16_to_str(resp_buffer + buf_idx, data); buf_idx += 4;
+                                resp_buffer[buf_idx++] = ']';
+                                resp_buffer[buf_idx++] = '\n';
+                                resp_buffer[buf_idx++] = 0;
+
+                                uart_puts(resp_buffer);    
+                            }                    
+                    }
+                    break;
                 case CMD_ADDRESS: {
-                        address = strutils_str_to_u32(resp_buffer+2); address &= 0x7FFFF;
+                        address = strutils_str_to_u32(pkt_buffer+2); address &= 0x7FFFF;
                         address_to_sipo_buffer(address);
 
                         uint8_t buf_idx = 0;
