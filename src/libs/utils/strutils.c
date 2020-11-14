@@ -51,6 +51,15 @@ void strutils_u8_to_str(char *str, uint8_t data) {
     }
 }
 
+void strutils_u16_to_str(char *str, uint16_t data) {
+    uint8_t nibble;
+
+    for(uint8_t idx = 0; idx < 4; idx++) {
+        nibble = (data >> ((7 - idx)*4)) & 0x0F;
+        str[idx] = nibble + ((nibble < 0x0A) ? 0x30 : 0x37);
+    }
+}
+
 void strutils_u32_to_str(char *str, uint32_t data) {
     uint8_t nibble;
 

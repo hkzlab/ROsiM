@@ -35,6 +35,7 @@
 #define CMD_VIEW    'V' // Returns current state
 
 #define CMD_ERROR "CMD_ERR\n"
+#define CMD_INVALID "CMD_INV\n"
 #define RESP_MODEL "[M 01]\n"
 
 static char pkt_buffer[PKT_BUFFER_SIZE];
@@ -48,6 +49,8 @@ static uint32_t address = 0;
 static uint8_t sipo_buffer[SIPO_BUFFER_SIZE];
 
 static uint8_t receive_pkt(void);
+static void address_to_sipo_buffer(uint32_t address);
+static void data_to_sipo_buffer(uint16_t data);
 
 void remote_control(void) {
     memset(sipo_buffer, 0, SIPO_BUFFER_SIZE);
@@ -74,6 +77,41 @@ void remote_control(void) {
                     break;
                 case CMD_RESET:
                     while(1); // Will reset the program via watchdog
+                case CMD_READ: {
+                        if(rwsw_state || iosw_state) uart_puts(CMD_INVALID); // Must be internal with write disabled
+                        else {
+                            sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
+                            uint16_t data = piso_shifter_get();
+
+                            uint8_t buf_idx = 0;
+                            resp_buffer[buf_idx++] = '[';
+                            resp_buffer[buf_idx++] = CMD_READ;
+                            resp_buffer[buf_idx++] = ' ';
+                            strutils_u16_to_str(resp_buffer + buf_idx, data); buf_idx += 4;
+                            resp_buffer[buf_idx++] = ']';
+                            resp_buffer[buf_idx++] = '\n';
+                            resp_buffer[buf_idx++] = 0;
+
+                            uart_puts(resp_buffer);                            
+                        }
+                    }
+                    break;
+                case CMD_ADRINCR: {
+                        address++; address &= 0x7FFFF;
+                        address_to_sipo_buffer(address);
+
+                        uint8_t buf_idx = 0;
+                        resp_buffer[buf_idx++] = '[';
+                        resp_buffer[buf_idx++] = CMD_ADRINCR;
+                        resp_buffer[buf_idx++] = ' ';
+                        strutils_u32_to_str(resp_buffer + buf_idx, address); buf_idx += 8;
+                        resp_buffer[buf_idx++] = ']';
+                        resp_buffer[buf_idx++] = '\n';
+                        resp_buffer[buf_idx++] = 0;
+
+                        uart_puts(resp_buffer);
+                    }
+                    break;
                 case CMD_VIEW: {
                         uint8_t buf_idx = 0;
                         resp_buffer[buf_idx++] = '[';
@@ -130,5 +168,27 @@ static uint8_t receive_pkt(void) {
                     break;
             }
         }
+    }
+}
+
+static void data_to_sipo_buffer(uint16_t data) {
+    // Clear the SIPO buffer so that contaisn data
+    sipo_buffer[0] = sipo_buffer[1] = 0;
+    sipo_buffer[2] &= 0x07;
+
+    for(uint16_t idx = 15, bit_cnt = 0; idx >= 0; idx--, bit_cnt++) { // We have D0-A15, thus we start with idx 15
+        // The first 5 bits in the buffer are unused pins
+        sipo_buffer[(5 + bit_cnt)/8] |= ((data >> idx) & 0x01) << ((5 + bit_cnt) % 8);
+    }   
+}
+
+static void address_to_sipo_buffer(uint32_t address) {
+    // Clear the SIPO buffer part that interests us, so we can write the address into it
+    sipo_buffer[3] = sipo_buffer[4] = 0;
+    sipo_buffer[2] &= 0xF8; 
+
+    for(uint16_t idx = 18, bit_cnt = 0; idx >= 0; idx--, bit_cnt++) { // We have A0-A18, thus we start with idx 18
+        // The first 21 bits (0-20) in the buffer are for data lines and unused pins
+        sipo_buffer[(21 + bit_cnt)/8] |= ((address >> idx) & 0x01) << ((21 + bit_cnt) % 8);
     }
 }
