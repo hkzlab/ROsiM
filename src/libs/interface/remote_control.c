@@ -316,7 +316,7 @@ static uint8_t receive_pkt(void) {
 static void data_to_sipo_buffer(uint16_t data) {
     // Clear the SIPO buffer so that contains data
     sipo_buffer[0] = sipo_buffer[1] = 0;
-    sipo_buffer[2] &= 0x07;
+    sipo_buffer[2] &= 0xE0;
 
     for(int16_t idx = 15, bit_cnt = 0; idx >= 0; idx--, bit_cnt++) { // We have D0-A15, thus we start with idx 15
         // The first 5 bits in the buffer are unused pins
@@ -327,7 +327,7 @@ static void data_to_sipo_buffer(uint16_t data) {
 static void address_to_sipo_buffer(uint32_t address) {
     // Clear the SIPO buffer part that interests us, so we can write the address into it
     sipo_buffer[3] = sipo_buffer[4] = 0;
-    sipo_buffer[2] &= 0xF8; 
+    sipo_buffer[2] &= 0x1F; 
 
     for(int16_t idx = 18, bit_cnt = 0; idx >= 0; idx--, bit_cnt++) { // We have A0-A18, thus we start with idx 18
         // The first 21 bits (0-20) in the buffer are for data lines and unused pins
@@ -378,7 +378,7 @@ static uint8_t test_sram(void) {
         ioutils_setSRAM_CE(1); // Disable the SRAM
     }
     
-    uart_puts("# TEST: Written 0xAA55\n");
+    uart_puts("# TEST: Written 0xAA55.\n");
     
     ioutils_setSRAM_WE(1);
     for(uint32_t addr = 0; addr <= 0x7FFFF; addr++) {
@@ -405,11 +405,11 @@ static uint8_t test_sram(void) {
         }
     }
 
-    uart_puts("# TEST: 0xAA55 OK\n");
+    uart_puts("# TEST: 0xAA55 OK!\n");
 
     // Test with 0x55AA    
     ioutils_setSRAM_WE(0);
-    for(uint32_t addr = 0x10000; addr <= 0x1FFFF; addr++) {
+    for(uint32_t addr = 0; addr <= 0x7FFFF; addr++) {
         wdt_reset();
         ioutils_setLED(1);
         address_to_sipo_buffer(addr);
@@ -421,10 +421,10 @@ static uint8_t test_sram(void) {
         ioutils_setLED(0);
     }
     
-    uart_puts("# TEST: Written 0x55AA\n");
+    uart_puts("# TEST: Written 0x55AA.\n");
     
     ioutils_setSRAM_WE(1);
-    for(uint32_t addr = 0x10000; addr <= 0x1FFFF; addr++) {
+    for(uint32_t addr = 0; addr <= 0x7FFFF; addr++) {
         wdt_reset();
         ioutils_setLED(1);
         address_to_sipo_buffer(addr);
@@ -448,7 +448,7 @@ static uint8_t test_sram(void) {
         }
     }
     
-    uart_puts("# TEST: 0x55AA OK\n");
+    uart_puts("# TEST: 0x55AA OK!\n");
 
     // Incremental test    
     ioutils_setSRAM_WE(0);
@@ -464,7 +464,7 @@ static uint8_t test_sram(void) {
         ioutils_setLED(0);
     }
     
-    uart_puts("# TEST: Written Incremental\n");
+    uart_puts("# TEST: Written Incremental.\n");
     
     ioutils_setSRAM_WE(1);
     for(uint32_t addr = 0; addr <= 0x7FFFF; addr++) {
@@ -491,7 +491,7 @@ static uint8_t test_sram(void) {
         }
     }
     
-    uart_puts("# TEST: Incremental OK\n");
+    uart_puts("# TEST: Incremental OK!\n");
 
     return 0;
 }
