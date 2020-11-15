@@ -57,6 +57,7 @@ static void address_to_sipo_buffer(uint32_t address);
 static void data_to_sipo_buffer(uint16_t data);
 static void restore_defaults(void);
 static uint8_t test_sram(void);
+static void format_test_error(char *buf, uint32_t addr, uint16_t data);
 
 void remote_control(void) {
     memset(sipo_buffer, 0, SIPO_BUFFER_SIZE);
@@ -392,14 +393,7 @@ static uint8_t test_sram(void) {
         ioutils_setSRAM_CE(1);
         ioutils_setLED(0);
         if(data != 0xAA55) {
-            uint8_t buf_idx = 0;
-            resp_buffer[buf_idx++] = '#';
-            resp_buffer[buf_idx++] = ' ';
-            strutils_u32_to_str(resp_buffer + buf_idx, addr); buf_idx += 8;
-            resp_buffer[buf_idx++] = ':';
-            strutils_u16_to_str(resp_buffer + buf_idx, data); buf_idx += 4;
-            resp_buffer[buf_idx++] = '\n';
-            resp_buffer[buf_idx++] = 0;
+            format_test_error(resp_buffer, addr, data);
             uart_puts(resp_buffer);
             return 1;
         }
@@ -435,15 +429,7 @@ static uint8_t test_sram(void) {
         ioutils_setSRAM_CE(1);
         ioutils_setLED(0);
         if(data != 0x55AA) {
-            uint8_t buf_idx = 0;
-            resp_buffer[buf_idx++] = '#';
-            resp_buffer[buf_idx++] = ' ';
-            strutils_u32_to_str(resp_buffer + buf_idx, addr); buf_idx += 8;
-            resp_buffer[buf_idx++] = ':';
-            strutils_u16_to_str(resp_buffer + buf_idx, data); buf_idx += 4;
-            resp_buffer[buf_idx++] = '\n';
-            resp_buffer[buf_idx++] = 0;
-            uart_puts(resp_buffer);
+            format_test_error(resp_buffer, addr, data);
             return 2;
         }
     }
@@ -478,14 +464,7 @@ static uint8_t test_sram(void) {
         ioutils_setSRAM_CE(1);
         ioutils_setLED(0);
         if(data != (addr & 0xFFFF)) {
-            uint8_t buf_idx = 0;
-            resp_buffer[buf_idx++] = '#';
-            resp_buffer[buf_idx++] = ' ';
-            strutils_u32_to_str(resp_buffer + buf_idx, addr); buf_idx += 8;
-            resp_buffer[buf_idx++] = ':';
-            strutils_u16_to_str(resp_buffer + buf_idx, data); buf_idx += 4;
-            resp_buffer[buf_idx++] = '\n';
-            resp_buffer[buf_idx++] = 0;
+            format_test_error(resp_buffer, addr, data);
             uart_puts(resp_buffer);
             return 3;
         }
@@ -494,4 +473,14 @@ static uint8_t test_sram(void) {
     uart_puts("# TEST: Incremental OK!\n");
 
     return 0;
+}
+static void format_test_error(char *buf, uint32_t addr, uint16_t data) {
+    uint8_t buf_idx = 0;
+    buf[buf_idx++] = '#';
+    buf[buf_idx++] = ' ';
+    strutils_u32_to_str(buf + buf_idx, addr); buf_idx += 8;
+    buf[buf_idx++] = ':';
+    strutils_u16_to_str(buf + buf_idx, data); buf_idx += 4;
+    buf[buf_idx++] = '\n';
+    buf[buf_idx++] = 0;
 }
