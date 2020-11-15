@@ -35,6 +35,8 @@
 #define CMD_RWSW    'X' // Switches SRAM between Write and Read mode (when in internal access)
 
 #define CMD_VIEW    'V' // Returns current state
+#define CMD_DEFAULT 'D' // Set everything back to defaults
+#define CMD_TEST    'T' // Test the SRAMs
 
 #define CMD_ERROR "CMD_ERR\n"
 #define CMD_INVALID "CMD_INV\n"
@@ -53,18 +55,13 @@ static uint8_t sipo_buffer[SIPO_BUFFER_SIZE];
 static uint8_t receive_pkt(void);
 static void address_to_sipo_buffer(uint32_t address);
 static void data_to_sipo_buffer(uint16_t data);
+static void restore_defaults(void);
 
 void remote_control(void) {
     memset(sipo_buffer, 0, SIPO_BUFFER_SIZE);
 
     // Setting up the initial state
-    ioutils_setEXT_OE(1); // Disable external->internal drivers
-    sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE); // Start with everything at 0
-    ioutils_setSRAM_WE(1); // Disable /WE on the SRAMs: read mode
-    ioutils_setSRAM_CE(1); // Disable /CE on the SRAMs
-    ioutils_setSRAM_OE(0); // Enable /OE on the SRAMs
-    sipo_shifter_OE(0); // Enable the outputs of the SIPO shifters
-    ioutils_setRESET(0); // Disable the external reset line 
+    restore_defaults();
 
     uart_puts("REMOTE_CONTROL_ENABLED\n");
 
@@ -134,7 +131,7 @@ void remote_control(void) {
 
                         if(rwsw_state) uart_puts(CMD_INVALID); // If in write mode, won't allow the switch between internal and external
                         else if (pkt_buffer[2] == '0') { // External mode enabled
-                            sipo_shifter_OE(1); // Disable the internal SIPO shifters
+                            sipo_shifter_OE(1); // Disable the internal SIPO shifters, this MUST be the FIRST thing we do
                             ioutils_setEXT_OE(0); // Enable external -> internal drivers
                             ioutils_setSRAM_WE(1); // Make double-sure that the write mode is disabled
                             ioutils_setSRAM_CE(0); // Enable the SRAM
@@ -143,7 +140,7 @@ void remote_control(void) {
                         } else if (pkt_buffer[2] == '1') { // Internal mode
                             ioutils_setSRAM_CE(1); // Disable the SRAM
                             ioutils_setEXT_OE(1); // Disable external -> internal drivers
-                            sipo_shifter_OE(0); // Enable the SIPO shifters
+                            sipo_shifter_OE(0); // Enable the SIPO shifters, this MUST be the LAST thing we do
                             iosw_state = 0; 
                             uart_puts(resp_buffer);
                         } else uart_puts(CMD_ERROR); 
@@ -241,6 +238,25 @@ void remote_control(void) {
                         uart_puts(resp_buffer);
                     }
                     break;
+                case CMD_DEFAULT: {
+                        restore_defaults();
+
+                        uint8_t buf_idx = 0;
+                        resp_buffer[buf_idx++] = '[';
+                        resp_buffer[buf_idx++] = CMD_DEFAULT;
+                        resp_buffer[buf_idx++] = ']';
+                        resp_buffer[buf_idx++] = '\n';
+                        resp_buffer[buf_idx++] = 0;
+
+                        uart_puts(resp_buffer);
+                    }
+                    break;
+                case CMD_TEST: {
+                        // TODO: Implement
+                        restore_defaults();
+                        uart_puts(CMD_INVALID);
+                    }
+                    break;
                 default:
                     uart_puts(CMD_ERROR);
                     break;
@@ -305,4 +321,26 @@ static void address_to_sipo_buffer(uint32_t address) {
         // The first 21 bits (0-20) in the buffer are for data lines and unused pins
         sipo_buffer[(21 + bit_cnt)/8] |= ((address >> idx) & 0x01) << ((21 + bit_cnt) % 8);
     }
+}
+
+static void restore_defaults(void) {
+    // Resetting the default state
+
+    iosw_state = 0; // 0 -> internal, 1 -> external
+    rwsw_state = 0; // 0 -> read, 1 -> write
+    erst_state = 0; // 0 -> inactive, 1 -> active
+    address = 0;
+
+    memset(sipo_buffer, 0, SIPO_BUFFER_SIZE);
+
+    sipo_shifter_OE(1); // Disable the outputs of the SIPO shifters
+    ioutils_setEXT_OE(1); // Disable external->internal drivers
+    ioutils_setSRAM_CE(1); // Disable /CE on the SRAMs
+    ioutils_setSRAM_WE(1); // Disable /WE on the SRAMs: read mode
+    ioutils_setSRAM_OE(0); // Enable /OE on the SRAMs
+    
+    sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE); // Start with everything at 0, address and data
+
+    sipo_shifter_OE(0); // Enable the outputs of the SIPO shifters
+    ioutils_setRESET(0); // Disable the external reset line     
 }
