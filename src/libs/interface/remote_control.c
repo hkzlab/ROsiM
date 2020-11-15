@@ -378,7 +378,7 @@ static uint8_t test_sram(void) {
         ioutils_setSRAM_CE(1); // Disable the SRAM
     }
     
-    uart_puts("# TEST: Written 0xAA55.\n");
+    uart_puts("# TEST: Written 0xAA55 ...\n");
     
     ioutils_setSRAM_WE(1);
     for(uint32_t addr = 0; addr <= 0x7FFFF; addr++) {
@@ -421,7 +421,7 @@ static uint8_t test_sram(void) {
         ioutils_setLED(0);
     }
     
-    uart_puts("# TEST: Written 0x55AA.\n");
+    uart_puts("# TEST: Written 0x55AA ...\n");
     
     ioutils_setSRAM_WE(1);
     for(uint32_t addr = 0; addr <= 0x7FFFF; addr++) {
@@ -464,7 +464,7 @@ static uint8_t test_sram(void) {
         ioutils_setLED(0);
     }
     
-    uart_puts("# TEST: Written Incremental.\n");
+    uart_puts("# TEST: Written Incremental ...\n");
     
     ioutils_setSRAM_WE(1);
     for(uint32_t addr = 0; addr <= 0x7FFFF; addr++) {
