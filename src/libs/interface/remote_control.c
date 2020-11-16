@@ -93,7 +93,7 @@ void remote_control(void) {
                             ioutils_setSRAM_WE(0);
                             rwsw_state = 1;
                             uart_puts(resp_buffer);
-                        } else if (pkt_buffer[2] == '1') { // Disable write on SRAM
+                        } else if (pkt_buffer[2] == '1') { // Disable write on SRAM, enables read
                             ioutils_setSRAM_WE(1);
                             rwsw_state = 0;
                             uart_puts(resp_buffer);
