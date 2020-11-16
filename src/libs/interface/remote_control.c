@@ -26,9 +26,8 @@
 #define CMD_MODEL 'M' // Returns model of the board
 
 #define CMD_ADDRESS 'A' // Set the current address for the RAM
-#define CMD_ADRINCR 'I' // Increment the current address by one
-#define CMD_WRITE   'W' // Write data at the current address
-#define CMD_READ    'R' // Read data at current address
+#define CMD_WRITE   'W' // Write data at the current address and increment it
+#define CMD_READ    'R' // Read data at current address and increment it
 
 #define CMD_ERST    'E' // Enables or disables the internal reset
 #define CMD_IOSW    'S' // Switches SRAM access between internal/external
@@ -157,6 +156,9 @@ void remote_control(void) {
                             uint16_t data = piso_shifter_get();
                             ioutils_setSRAM_CE(1); // Disable the SRAM
 
+                            address++; address &= 0x7FFFF;
+                            address_to_sipo_buffer(address);
+
                             uint8_t buf_idx = 0;
                             resp_buffer[buf_idx++] = '[';
                             resp_buffer[buf_idx++] = CMD_READ;
@@ -180,6 +182,9 @@ void remote_control(void) {
                                 _delay_us(1);
                                 ioutils_setSRAM_CE(1); // Disable the SRAM
 
+                                address++; address &= 0x7FFFF;
+                                address_to_sipo_buffer(address);
+
                                 uint8_t buf_idx = 0;
                                 resp_buffer[buf_idx++] = '[';
                                 resp_buffer[buf_idx++] = CMD_WRITE;
@@ -200,22 +205,6 @@ void remote_control(void) {
                         uint8_t buf_idx = 0;
                         resp_buffer[buf_idx++] = '[';
                         resp_buffer[buf_idx++] = CMD_ADDRESS;
-                        resp_buffer[buf_idx++] = ' ';
-                        strutils_u32_to_str(resp_buffer + buf_idx, address); buf_idx += 8;
-                        resp_buffer[buf_idx++] = ']';
-                        resp_buffer[buf_idx++] = '\n';
-                        resp_buffer[buf_idx++] = 0;
-
-                        uart_puts(resp_buffer);
-                    }
-                    break;
-                case CMD_ADRINCR: {
-                        address++; address &= 0x7FFFF;
-                        address_to_sipo_buffer(address);
-
-                        uint8_t buf_idx = 0;
-                        resp_buffer[buf_idx++] = '[';
-                        resp_buffer[buf_idx++] = CMD_ADRINCR;
                         resp_buffer[buf_idx++] = ' ';
                         strutils_u32_to_str(resp_buffer + buf_idx, address); buf_idx += 8;
                         resp_buffer[buf_idx++] = ']';
