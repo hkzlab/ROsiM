@@ -140,6 +140,7 @@ void remote_control(void) {
                             ioutils_setEXT_OE(0); // Enable external -> internal drivers
                             _delay_us(250);
                             ioutils_setSRAM_CE(0); // Enable the SRAM
+                            rwsw_state = 0; 
                             iosw_state = 1; 
                             uart_puts(resp_buffer);
                         } else if (pkt_buffer[2] == '1') { // Internal mode
