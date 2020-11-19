@@ -186,6 +186,8 @@ void remote_control(void) {
                         if(!rwsw_state || iosw_state) uart_puts(CMD_INVALID);
                         else {
                             uint8_t xfer_stat = xmodem_xfer(0); // TODO: Parse the command here
+
+                            uart_putchar('\n');
                                 
                             uint8_t buf_idx = 0;
                             resp_buffer[buf_idx++] = '[';

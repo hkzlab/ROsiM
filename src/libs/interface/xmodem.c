@@ -55,7 +55,6 @@ uint8_t xmodem_xfer(XMODEM_Dump_Type dtype) {
         wdt_reset();
     }
 
-
     return 0;
 }
 
