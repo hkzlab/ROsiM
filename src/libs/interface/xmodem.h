@@ -9,6 +9,6 @@ typedef enum {
     BIN_16S = 2
 } XMODEM_Dump_Type;
 
-uint8_t xmodem_xfor(XMODEM_Dump_Type dtype);
+uint8_t xmodem_xfer(XMODEM_Dump_Type dtype);
 
 #endif /* _XMODEM_H_ */

@@ -1,4 +1,5 @@
 #include "remote_control.h"
+#include "xmodem.h"
 
 #include <avr/wdt.h>
 
@@ -36,6 +37,8 @@
 #define CMD_VIEW    'V' // Returns current state
 #define CMD_DEFAULT 'D' // Set everything back to defaults
 #define CMD_TEST    'T' // Test the SRAMs
+
+#define CMD_XMODEM  'O' // XMODEM transfer
 
 #define CMD_ERROR "CMD_ERR\n"
 #define CMD_INVALID "CMD_INV\n"
@@ -176,6 +179,24 @@ void remote_control(void) {
                             resp_buffer[buf_idx++] = 0;
 
                             uart_puts(resp_buffer);                            
+                        }
+                    }
+                    break;
+                case CMD_XMODEM: {
+                        if(!rwsw_state || iosw_state) uart_puts(CMD_INVALID);
+                        else {
+                            uint8_t xfer_stat = xmodem_xfer(0); // TODO: Parse the command here
+                                
+                            uint8_t buf_idx = 0;
+                            resp_buffer[buf_idx++] = '[';
+                            resp_buffer[buf_idx++] = CMD_XMODEM;
+                            resp_buffer[buf_idx++] = ' ';
+                            resp_buffer[buf_idx++] = xfer_stat + 0x30;
+                            resp_buffer[buf_idx++] = ']';
+                            resp_buffer[buf_idx++] = '\n';
+                            resp_buffer[buf_idx++] = 0;
+
+                            uart_puts(resp_buffer);                              
                         }
                     }
                     break;
