@@ -19,12 +19,16 @@ CE = oCE | !VCC
 
 **NOTE**: Implemented in pods for now
 
-## Rotate external reset header by 90 degrees
+## Rotate external /RESET header by 90 degrees
 
 Rotate the external reset header and move it away from the mounting hole.
 It's too easy to short the connection with a crocodile right now.
 
-## Add header for ground connection
+## Add RESET (not inverted) header
+
+Add an header for RESET signal (not inverted, non OC)
+
+## Add header for GND connection
 
 Add ground connection header on the pcb, similar to the reset one, so it's easier to make a better GND connection to the target board
 
