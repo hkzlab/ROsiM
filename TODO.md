@@ -16,3 +16,18 @@ A possible solution would be to implement the following logic on a connection po
 
 CE = oCE | !VCC
 ```
+
+**NOTE**: Implemented in pods for now
+
+## Rotate external reset header by 90 degrees
+
+Rotate the external reset header and move it away from the mounting hole.
+It's too easy to short the connection with a crocodile right now.
+
+## Add header for ground connection
+
+Add ground connection header on the pcb, similar to the reset one, so it's easier to make a better GND connection to the target board
+
+## Use 1mbyte SRAMs
+
+See if 1Mbyte SRAMs are available and use them for new designs.
