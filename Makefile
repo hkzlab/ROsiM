@@ -47,7 +47,7 @@ TARGET = out/DuPAL
 SRC = src/main.c src/libs/ioutils/mcu_io.c src/libs/uart/uart.c src/libs/utils/strutils.c src/libs/shifter/sipo_shifter.c \
 		src/libs/ioutils/ioutils.c \
 		src/libs/interface/remote_control.c src/libs/shifter/piso_shifter.c \
-		src/libs/utils/millis.c
+		src/libs/utils/millis.c src/libs/utils/crc.c
 
 # List Assembler source files here.
 #     Make them always end in a capital .S.  Files ending in a lowercase .s
