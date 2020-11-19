@@ -15,10 +15,9 @@
 
 #define XMODEM_PKT_SIZE 133
 
-#define XMODEM_DEFAULT_TRIES 4
+#define XMODEM_DEFAULT_TRIES 10
 
 static uint8_t packet_buf[XMODEM_PKT_SIZE];
-static int16_t last_pkt = -1;
 
 static uint8_t xmodem_sync(uint8_t tries);
 static uint8_t xmodem_recv_pkt(void);
@@ -37,12 +36,12 @@ uint8_t xmodem_xfer(XMODEM_Dump_Type dtype) {
                     if(!xmodem_check_packet()) { uart_putchar(NACK); nack_retries--; }
                     else {
                         nack_retries = 0xFF;
-                        last_pkt = packet_buf[1];
                         xmodem_upload_packet(dtype);
                         uart_putchar(ACK);
                     }
                     break;
                 case EOT: // Transfer completed
+                    uart_putchar(ACK);
                     return 1;
                 default: // Unknown packet...
                     uart_putchar(NACK);
@@ -67,7 +66,6 @@ static uint8_t xmodem_sync(uint8_t tries) {
         uart_putchar(SYNC);
         while((millis() - now) < 3000) { // Wait 3 seconds before putting out another SYNC
             wdt_reset();
-            _delay_ms(100);
             if(uart_charavail()) return 1; // Got something!!!
         }
     }
@@ -78,20 +76,23 @@ static uint8_t xmodem_sync(uint8_t tries) {
 static uint8_t xmodem_check_packet(void) {
     uint16_t crc = crc_calc(&packet_buf[3], 128);
     uint16_t calc_crc = ((uint16_t)packet_buf[131]) << 8 | packet_buf[132];
-    uint8_t expected_packet = (last_pkt + 1) & 0xFF;
 
     if(crc != calc_crc) return 0; // Corrupted
-    if(packet_buf[1] != expected_packet) return 0; // Have missed a packet?
 
     return 1;
 }
 
 static uint8_t xmodem_recv_pkt(void) {
     uint8_t didx = 0;
+    uint8_t data = 0;
 
     while(didx < XMODEM_PKT_SIZE) {
-        if(uart_charavail()) packet_buf[didx++] = uart_getchar();
-        else _delay_ms(5);
+        if(uart_charavail()) {
+            data = uart_getchar();
+            packet_buf[didx] = data;
+            if(!didx && (data == EOT)) break;
+            didx++;
+        }
 
         wdt_reset();
     }
