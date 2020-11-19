@@ -6,7 +6,7 @@ encoding utf-8
 Sheet 1 1
 Title "ROsiM"
 Date ""
-Rev ""
+Rev "1.1"
 Comp ""
 Comment1 ""
 Comment2 ""
