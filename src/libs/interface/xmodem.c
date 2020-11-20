@@ -17,8 +17,8 @@
 #define XMODEM_PKT_SIZE 133
 
 #define XMODEM_DEFAULT_TRIES 10
-#define XMODEM_XFER_TIMEOUT 15 // 15 seconds without packets
-#define XMODEM_BYTE_TIMEOUT 5 // 5 seconds without transferred bytes
+#define XMODEM_XFER_TIMEOUT 1000 // 1 sec without transferred bytes
+#define XMODEM_BYTE_TIMEOUT 100 // 100 ms without transferred bytes
 
 static uint8_t packet_buf[XMODEM_PKT_SIZE];
 
@@ -62,7 +62,7 @@ uint8_t xmodem_xfer(XMODEM_Dump_Type dtype) {
         } else uart_putchar(NACK);
 
         now = millis();
-        if((now > last_packet) && ((now - last_packet) > (uint32_t)XMODEM_XFER_TIMEOUT*1000)) break; // Transfer timed out
+        if((now > last_packet) && ((now - last_packet) > (uint32_t)XMODEM_XFER_TIMEOUT)) { nack_retries--; uart_putchar(NACK); };
 
         wdt_reset();
     }
@@ -113,7 +113,7 @@ static uint8_t xmodem_recv_pkt(void) {
         }
 
         now = millis();
-        if((now > last_data) && ((now - last_data) > (uint32_t)XMODEM_BYTE_TIMEOUT*1000)) return 0; // Transfer timed out
+        if((now > last_data) && ((now - last_data) > (uint32_t)XMODEM_BYTE_TIMEOUT)) return 0; // Transfer timed out
 
         wdt_reset();
     }
