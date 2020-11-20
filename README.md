@@ -68,6 +68,123 @@ An active-high signal (either high or disconnected) will be present on this head
 Solder an arc of rigid wire on this one, so you can attach a small crocodile clip to it.
 ## Software
 
+While this board can be controlled directly via a simple serial terminal, it is advised to use a client software that supports the following protocol, like the [ROsiM Loader](https://github.com/hkzlab/ROsiM_Loader).
+
 ### Protocol
 
-**TODO**
+The **Remote Control** protocol is pretty simple and ASCII based. It supports 12 commands, each with its own syntax and response.
+
+String `CMD_ERR` will be sent in case the command is not recognized, string `CMD_INV` will be sent in case the command cannot be executed at this time.
+
+#### RESET
+
+- Syntax: `>K<`
+- Response: none
+
+Forces the reset by watchdog of the ROsiM.
+
+#### MODEL
+
+- Syntax: `>M<`
+- Response: `[M xx]`
+
+Returns the current model of the board in hex. 
+
+#### ADDRESS
+
+- Syntax: `>A 00xxxxxx<`
+- Response: `[A 00xxxxxx]`
+
+Specifies the start address for the next read/write commands.
+The address must be specified in hex, and a mask of 0x7FFFF will be applied to it.
+
+#### WRITE
+
+- Syntax: `>W xxxx<`
+- Response: `[W xxxx]`
+
+The SRAM must be in WRITE mode and the board switched to INTERNAL, otherwise the response `CMD_INV` will be sent.
+
+`xxxx` is the data to write on SRAM at the current address in hex format.
+Once the write completes, the **address will automatically increment by 1**.
+
+#### READ
+
+- Syntax: `>R<`
+- Response: `[R xxxx]`
+
+The SRAM must be in READ mode and the board switched to INTERNAL, otherwise the response `CMD_INV` will be sent.
+
+`xxxx` is the data written at the current address in hex format. Once the read completes, the **address will automatically increment by 1**.
+
+#### EXTERNAL RESET
+
+- Syntax: `>E y<` where `y` can be `0` or `1`
+- Response: `[E y]`
+
+Enables (`0`) or disables (`1`) the external RESET signal to the target board.
+
+#### INTERNAL/EXTERNAL SWITCH
+
+- Syntax: `>S y<` where `y` can be `0` or `1`
+- Response: `[S y]`
+
+To execute this command, the SRAM must be in READ mode, otherwise the response `CMD_INV` will be sent.
+Sets the board to INTERNAL (`1`) or EXTERNAL (`0`) mode. EXTERNAL mode will enable the drivers that communicate through the external address/data/control lines.
+
+#### READ/WRITE SWITCH
+
+- Syntax: `>X y<` where `y` can be `0` or `1`
+- Response: `[X y]`
+
+To execute this command, the board must be in INTERNAL mode, otherwise the response `CMD_INV` will be sent.
+Sets the SRAM to READ (`1`) or WRITE (`0`) mode.
+
+#### VIEW
+
+- Syntax: `>V<`
+- Response: `[V 00xxxxxx yy]`
+
+This command will print out the current address in hex format (`00xxxxxx`) and a mask (`yy`) in hex format that contains:
+
+- bit 0: INTERNAL/EXTERNAL state
+- bit 1: READ/WRITE state
+- bit 2: EXTERNAL RESET state
+
+#### DEFAULTS
+
+- Syntax: `>D<`
+- Response: `[D]`
+
+Will revert the board state to the following state:
+
+- INTERNAL
+- SRAM in READ mode
+- EXTERNAL RESET disabled
+
+#### TEST
+
+- Syntax: `>T<`
+- Response: `[T xx]`
+
+Resets the board to defaults then executes a test on the SRAMs by writing patterns of data in them and reading them back.
+
+The output can be:
+
+- `00` test was completed successfully
+- `01` test failed while writing the first pattern (`0xAA55`)
+- `02` test failed while writing the first pattern (`0x55AA`)
+- `03` the test failed while writing the incremental pattern
+
+#### XMODEM
+
+- Syntax: `>O xx<`
+- Response: `[O yy]`
+
+Starts an XMODEM transfer of a binary file into the SRAM.
+
+`xx` can be:
+
+- `00` The file will be considered an 8-bit dump, the highest 8 bits of the SRAM will be set to `0x00`, only the lower 8 bits will be set.
+- `01` The file will be considered a 16-bit dump, and the data will be loaded into the SRAM in words. ODD bytes in the dump will end up in the high byte of the SRAM, EVEN bytes will end up in the low byte of the SRAM.
+- `02` The file will be considered a **byte swapped** 16-bit dump, and the data will be loaded into the SRAM in words. EVEN bytes in the dump will end up in the high byte of the SRAM, ODD bytes will end up in the low byte of the SRAM.
