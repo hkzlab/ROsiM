@@ -14,6 +14,8 @@ The idea is to use this bare board and then "pods" that attach to the two 40pin 
 
 **WARNING:** While I might help you with quick questions, there is NOT going to be hand-holding for this one.
 
+**WARNING 2:** The gerbers included in this repository are for revision 1.1 of the board. It has minor fixes in respect to the revision 1.0 that I am testing (components placement, plus a RESET line in addition to /RESET). These should not break any functionality, but be advised that I have yet to do a production run of 1.1 boards.
+
 ## Board
 
 This board is designed around relatively cheap through hole components, and should be buildable by anyone with minimum soldering skills.
