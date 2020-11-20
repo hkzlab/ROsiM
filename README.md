@@ -10,7 +10,9 @@ The board is based around an ATMega328P chip @20Mhz, controlled via RS232 connec
 
 I made this out of my personal need of a simple way to quickly test ROM images on boards I repair or hack. Often, these boards use big 16bit EPROMs and the projects I found around did not cater to my needs.
 
-While I might help you with quick questions, there is NOT going to be hand-holding for this one.
+The idea is to use this bare board and then "pods" that attach to the two 40pin header and adapt it to simulate various types of ROMs.
+
+**WARNING:** While I might help you with quick questions, there is NOT going to be hand-holding for this one.
 
 ## Board
 
@@ -19,6 +21,10 @@ This board is designed around relatively cheap through hole components, and shou
 You'll need a way to program your 328P MCU with the bootloader (you can then load the firmware via serial port).
 
 I recommend [optiboot](https://github.com/Optiboot/optiboot). Remember to set the AVR frequency to 20Mhz and baudrate to 115200bps. I might provide prebuilt binaries of this in the future.
+
+### Bill of Materials
+
+**TODO**
 
 ### Connections
 
