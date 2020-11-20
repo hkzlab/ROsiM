@@ -186,16 +186,16 @@ The output can be:
 
 #### XMODEM
 
-- Syntax: `>O xx<`
+- Syntax: `>O x<`
 - Response: `[O yy]`
 
 Starts an XMODEM transfer of a binary file into the SRAM.
 
-`xx` can be:
+`x` can be:
 
-- `00` The file will be considered an 8-bit dump, the highest 8 bits of the SRAM will be set to `0x00`, only the lower 8 bits will be set.
-- `01` The file will be considered a 16-bit dump, and the data will be loaded into the SRAM in words. ODD bytes in the dump will end up in the high byte of the SRAM, EVEN bytes will end up in the low byte of the SRAM.
-- `02` The file will be considered a **byte swapped** 16-bit dump, and the data will be loaded into the SRAM in words. EVEN bytes in the dump will end up in the high byte of the SRAM, ODD bytes will end up in the low byte of the SRAM.
+- `0` The file will be considered an 8-bit dump, the highest 8 bits of the SRAM will be set to `0x00`, only the lower 8 bits will be set.
+- `1` The file will be considered a 16-bit dump, and the data will be loaded into the SRAM in words. ODD bytes in the dump will end up in the high byte of the SRAM, EVEN bytes will end up in the low byte of the SRAM.
+- `2` The file will be considered a **byte swapped** 16-bit dump, and the data will be loaded into the SRAM in words. EVEN bytes in the dump will end up in the high byte of the SRAM, ODD bytes will end up in the low byte of the SRAM.
 
 `yy` will be:
 
