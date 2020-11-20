@@ -31,6 +31,7 @@ uint8_t xmodem_xfer(XMODEM_Dump_Type dtype) {
     uint8_t nack_retries = 0xFF;
     uint32_t last_packet = millis();
     uint32_t now = 0;
+    uint8_t last_pkt_num = 0xFF; // As we start from 0, this should be different from the first we get
 
     if(!xmodem_sync(XMODEM_DEFAULT_TRIES)) return 0; // No SYNC, time to exit
     wdt_reset();
@@ -45,7 +46,10 @@ uint8_t xmodem_xfer(XMODEM_Dump_Type dtype) {
                     if(!xmodem_check_packet()) { uart_putchar(NACK); nack_retries--; }
                     else {
                         nack_retries = 0xFF;
-                        xmodem_upload_packet(dtype);
+                        if(last_pkt_num != packet_buf[1]) { // Upload this only if it is not a retransmission
+                            xmodem_upload_packet(dtype);
+                            last_pkt_num = packet_buf[1] & 0xFF;
+                        }
                         uart_putchar(ACK);
                     }
                     break;
