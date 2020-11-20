@@ -8,7 +8,7 @@ The board is based around an ATMega328P chip @20Mhz, controlled via RS232 connec
 
 ![Rev. 1.1 PCB](pics/rev_11_pcb.png)
 
-I made this out of my personal need of a simple way to quickly test ROM images on boards I repair or hack. Often, these boards use big 16bit EPROMs and the projects I found around did not cater to my needs.
+I made this out of my personal need of a simple way to quickly test ROM images on boards I repair/hack/build. Often, these boards use big 16bit EPROMs and the projects I found around did not cater to my needs.
 
 The idea is to use this bare board and then "pods" that attach to the two 40pin header and adapt it to simulate various types of ROMs.
 
