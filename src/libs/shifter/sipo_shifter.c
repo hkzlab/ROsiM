@@ -31,13 +31,13 @@ void sipo_shifter_set(uint8_t *data, uint8_t len) {
 
 static inline void toggle_SRCLK(void) {
     SIPO_PORT_1 |= _BV(SIPO_1_CLK); // Set CLK high
-    _delay_us(5);
+    _delay_us(1);
     SIPO_PORT_1 &= ~(_BV(SIPO_1_CLK)); // Set CLK low
 }
 
 static inline void toggle_RCLK(void) {
     SIPO_PORT_2 |= _BV(SIPO_2_RCLK); // Set RCLK high
-    _delay_us(5);
+    _delay_us(1);
     SIPO_PORT_2 &= ~(_BV(SIPO_2_RCLK)); // Set RCLK low
 }
 
