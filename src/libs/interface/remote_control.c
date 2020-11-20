@@ -183,23 +183,36 @@ void remote_control(void) {
                     }
                     break;
                 case CMD_XMODEM: {
-                        if(!rwsw_state || iosw_state) uart_puts(CMD_INVALID);
-                        else {
-                            uint8_t xfer_stat = xmodem_xfer(0); // TODO: Parse the command here
+                        restore_defaults(); // Reset everything back to default
+                        _delay_us(100);
+                        ioutils_setSRAM_WE(0); // Enable write mode 
 
-                            uart_putchar('\n');
-                                
-                            uint8_t buf_idx = 0;
-                            resp_buffer[buf_idx++] = '[';
-                            resp_buffer[buf_idx++] = CMD_XMODEM;
-                            resp_buffer[buf_idx++] = ' ';
-                            resp_buffer[buf_idx++] = xfer_stat + 0x30;
-                            resp_buffer[buf_idx++] = ']';
-                            resp_buffer[buf_idx++] = '\n';
-                            resp_buffer[buf_idx++] = 0;
-
-                            uart_puts(resp_buffer);                              
+                        uint8_t xfer_stat = 0;
+                        switch(pkt_buffer[2]) {
+                            case '0':
+                            case '1':
+                            case '2':
+                                xfer_stat = xmodem_xfer(pkt_buffer[2]-0x30);
+                                break;
+                            default:
+                                break;
                         }
+
+                        restore_defaults(); // Defaults again
+                        _delay_us(100);
+
+                        uart_putchar('\n');
+                                
+                        uint8_t buf_idx = 0;
+                        resp_buffer[buf_idx++] = '[';
+                        resp_buffer[buf_idx++] = CMD_XMODEM;
+                        resp_buffer[buf_idx++] = ' ';
+                        resp_buffer[buf_idx++] = xfer_stat + 0x30;
+                        resp_buffer[buf_idx++] = ']';
+                        resp_buffer[buf_idx++] = '\n';
+                        resp_buffer[buf_idx++] = 0;
+
+                        uart_puts(resp_buffer);                              
                     }
                     break;
                 case CMD_WRITE: {
