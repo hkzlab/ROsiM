@@ -1,5 +1,6 @@
 #include "remote_control.h"
 #include "xmodem.h"
+#include "data_buffer.h"
 
 #include <avr/wdt.h>
 
@@ -20,8 +21,6 @@
 #define PKT_END '<'
 #define RESP_START '['
 #define RESP_END ']'
-
-#define SIPO_BUFFER_SIZE 5
 
 #define CMD_RESET 'K' // Reset the board
 #define CMD_MODEL 'M' // Returns model of the board
@@ -52,17 +51,15 @@ static uint8_t rwsw_state = 0; // 0 -> read, 1 -> write
 static uint8_t erst_state = 0; // 0 -> inactive, 1 -> active
 static uint32_t address = 0;
 
-static uint8_t sipo_buffer[SIPO_BUFFER_SIZE];
 
 static uint8_t receive_pkt(void);
-static void address_to_sipo_buffer(uint32_t address);
-static void data_to_sipo_buffer(uint16_t data);
+
 static void restore_defaults(void);
 static uint8_t test_sram(void);
 static void format_test_error(char *buf, uint32_t addr, uint16_t data);
 
 void remote_control(void) {
-    memset(sipo_buffer, 0, SIPO_BUFFER_SIZE);
+    clear_sipo_buffer();
 
     // Setting up the initial state
     restore_defaults();
@@ -346,28 +343,6 @@ static uint8_t receive_pkt(void) {
     }
 }
 
-static void data_to_sipo_buffer(uint16_t data) {
-    // Clear the SIPO buffer so that contains data
-    sipo_buffer[0] = sipo_buffer[1] = 0;
-    sipo_buffer[2] &= 0xE0;
-
-    for(int16_t idx = 15, bit_cnt = 0; idx >= 0; idx--, bit_cnt++) { // We have D0-A15, thus we start with idx 15
-        // The first 5 bits in the buffer are unused pins
-        sipo_buffer[(5 + bit_cnt)/8] |= ((data >> idx) & 0x01) << ((5 + bit_cnt) % 8);
-    }   
-}
-
-static void address_to_sipo_buffer(uint32_t address) {
-    // Clear the SIPO buffer part that interests us, so we can write the address into it
-    sipo_buffer[3] = sipo_buffer[4] = 0;
-    sipo_buffer[2] &= 0x1F; 
-
-    for(int16_t idx = 18, bit_cnt = 0; idx >= 0; idx--, bit_cnt++) { // We have A0-A18, thus we start with idx 18
-        // The first 21 bits (0-20) in the buffer are for data lines and unused pins
-        sipo_buffer[(21 + bit_cnt)/8] |= ((address >> idx) & 0x01) << ((21 + bit_cnt) % 8);
-    }
-}
-
 static void restore_defaults(void) {
     // Resetting the default state
 
@@ -376,7 +351,7 @@ static void restore_defaults(void) {
     erst_state = 0; // 0 -> inactive, 1 -> active
     address = 0;
 
-    memset(sipo_buffer, 0, SIPO_BUFFER_SIZE);
+    clear_sipo_buffer();
 
     sipo_shifter_OE(1); // Disable the outputs of the SIPO shifters
     ioutils_setEXT_OE(1); // Disable external->internal drivers
@@ -506,6 +481,7 @@ static uint8_t test_sram(void) {
 
     return 0;
 }
+
 static void format_test_error(char *buf, uint32_t addr, uint16_t data) {
     uint8_t buf_idx = 0;
     buf[buf_idx++] = '#';
