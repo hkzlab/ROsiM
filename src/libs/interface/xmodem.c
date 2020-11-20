@@ -1,5 +1,7 @@
 #include "xmodem.h"
 
+#include "data_buffer.h"
+
 #include <avr/wdt.h>
 #include <util/delay.h>
 
@@ -7,6 +9,7 @@
 #include <utils/crc.h>
 #include <utils/millis.h>
 #include <ioutils/ioutils.h>
+#include <shifter/sipo_shifter.h>
 
 #define SOH     0x01
 #define EOT     0x04
@@ -14,11 +17,15 @@
 #define NACK    0x15
 #define SYNC    0x43
 
-#define XMODEM_PKT_SIZE 133
+#define XMODEM_DATA_OFFSET 3
+#define XMODEM_DATA_SIZE 128
+#define XMODEM_PKT_SIZE (XMODEM_DATA_SIZE+5)
 
 #define XMODEM_DEFAULT_TRIES 10
 #define XMODEM_XFER_TIMEOUT 1000 // 1 sec without transferred bytes
 #define XMODEM_BYTE_TIMEOUT 100 // 100 ms without transferred bytes
+
+static uint32_t upload_address = 0;
 
 static uint8_t packet_buf[XMODEM_PKT_SIZE];
 
@@ -32,6 +39,8 @@ uint8_t xmodem_xfer(XMODEM_Dump_Type dtype) {
     uint32_t last_packet = millis();
     uint32_t now = 0;
     uint8_t last_pkt_num = 0xFF; // As we start from 0, this should be different from the first we get
+
+    upload_address = 0; // Start the upload from the beginning of the SRAM
 
     if(!xmodem_sync(XMODEM_DEFAULT_TRIES)) return 0; // No SYNC, time to exit
     wdt_reset();
@@ -91,7 +100,7 @@ static uint8_t xmodem_sync(uint8_t tries) {
 }
 
 static uint8_t xmodem_check_packet(void) {
-    uint16_t crc = crc_calc(&packet_buf[3], 128);
+    uint16_t crc = crc_calc(&packet_buf[XMODEM_DATA_OFFSET], XMODEM_DATA_SIZE);
     uint16_t calc_crc = ((uint16_t)packet_buf[131]) << 8 | packet_buf[132];
 
     if(crc != calc_crc) return 0; // Corrupted
@@ -126,6 +135,29 @@ static uint8_t xmodem_recv_pkt(void) {
 }
 
 static void xmodem_upload_packet(XMODEM_Dump_Type dtype) {
-    // TODO: Upload the packet to the SRAMs
+    uint8_t incr = (dtype == BIN_8) ? 1 : 2; // Are we using bytes or words?
+
+    for(uint8_t idx = 0; idx < XMODEM_DATA_SIZE; idx += incr) {
+        address_to_sipo_buffer(upload_address);
+        switch(dtype) {
+            default:
+            case BIN_8:
+                data_to_sipo_buffer(packet_buf[XMODEM_DATA_OFFSET + idx]);
+                break;
+            case BIN_16:
+                data_to_sipo_buffer((((uint16_t)packet_buf[XMODEM_DATA_OFFSET + idx + 1]) << 8) | packet_buf[XMODEM_DATA_OFFSET + idx]);
+                break;
+            case BIN_16S:
+                data_to_sipo_buffer((((uint16_t)packet_buf[XMODEM_DATA_OFFSET + idx]) << 8) | packet_buf[XMODEM_DATA_OFFSET + idx + 1]);
+                break;
+        }
+
+        sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
+        ioutils_setSRAM_CE(0); // Enable the SRAM
+        _delay_us(1);
+        ioutils_setSRAM_CE(1); // Disable the SRAM
+        
+        upload_address++;
+    }
 }
 
