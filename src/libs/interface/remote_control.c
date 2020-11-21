@@ -382,7 +382,7 @@ static uint8_t test_sram(void) {
         data_to_sipo_buffer(0xAA55);
         sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
-        _delay_us(1);
+        _delay_us(0.1);
         ioutils_setSRAM_CE(1); // Disable the SRAM
     }
     
@@ -395,7 +395,7 @@ static uint8_t test_sram(void) {
         address_to_sipo_buffer(addr);
         sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
-        _delay_us(1);
+        _delay_us(0.1);
         data = piso_shifter_get();
         ioutils_setSRAM_CE(1);
         ioutils_setLED(0);
@@ -417,7 +417,7 @@ static uint8_t test_sram(void) {
         data_to_sipo_buffer(0x55AA);
         sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
-        _delay_us(1);
+        _delay_us(0.1);
         ioutils_setSRAM_CE(1); // Disable the SRAM
         ioutils_setLED(0);
     }
@@ -431,7 +431,7 @@ static uint8_t test_sram(void) {
         address_to_sipo_buffer(addr);
         sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
-        _delay_us(1);
+        _delay_us(0.1);
         data = piso_shifter_get();
         ioutils_setSRAM_CE(1);
         ioutils_setLED(0);
@@ -452,7 +452,7 @@ static uint8_t test_sram(void) {
         data_to_sipo_buffer(addr & 0xFFFF);
         sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
-        _delay_us(1);
+        _delay_us(0.1);
         ioutils_setSRAM_CE(1); // Disable the SRAM
         ioutils_setLED(0);
     }
@@ -466,7 +466,7 @@ static uint8_t test_sram(void) {
         address_to_sipo_buffer(addr);
         sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
-        _delay_us(1);
+        _delay_us(0.1);
         data = piso_shifter_get();
         ioutils_setSRAM_CE(1);
         ioutils_setLED(0);
