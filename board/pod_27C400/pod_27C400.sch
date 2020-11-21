@@ -744,140 +744,21 @@ F 3 "" H 7200 2100 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	7050 2100 7200 2100
-$Comp
-L Connector_Generic:Conn_02x14_Odd_Even J5
-U 1 1 5FE5E217
-P 6500 3700
-F 0 "J5" H 6550 4517 50  0000 C CNN
-F 1 "ROM Lines" H 6550 4426 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_2x14_P2.54mm_Vertical" H 6500 3700 50  0001 C CNN
-F 3 "~" H 6500 3700 50  0001 C CNN
-	1    6500 3700
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
-	6800 3100 7200 3100
-Text Label 7200 3100 2    50   ~ 0
+	6950 5000 7350 5000
+Text Label 7350 5000 2    50   ~ 0
 EXT_VCC
-Wire Wire Line
-	6800 3200 7200 3200
-Wire Wire Line
-	6800 3300 7200 3300
-Wire Wire Line
-	6800 3400 7200 3400
-Wire Wire Line
-	6800 3500 7200 3500
-Wire Wire Line
-	6800 3600 7200 3600
-Wire Wire Line
-	6800 3700 7200 3700
-Wire Wire Line
-	6800 3800 7200 3800
-Wire Wire Line
-	6800 3900 7200 3900
-Wire Wire Line
-	6800 4000 7200 4000
-Wire Wire Line
-	6800 4100 7200 4100
-Wire Wire Line
-	6800 4200 7200 4200
-Wire Wire Line
-	6800 4300 7200 4300
-Wire Wire Line
-	6800 4400 7200 4400
-Wire Wire Line
-	6300 3100 5800 3100
-Wire Wire Line
-	6300 3200 5800 3200
-Wire Wire Line
-	6300 3300 5800 3300
-Wire Wire Line
-	6300 3400 5800 3400
-Wire Wire Line
-	6300 3500 5800 3500
-Wire Wire Line
-	6300 3600 5800 3600
-Wire Wire Line
-	6300 3700 5800 3700
-Wire Wire Line
-	6300 3800 5800 3800
-Wire Wire Line
-	6300 3900 5800 3900
-Wire Wire Line
-	6300 4000 5800 4000
-Wire Wire Line
-	6300 4100 5800 4100
-Wire Wire Line
-	6300 4200 5800 4200
-Wire Wire Line
-	6300 4300 5800 4300
-Wire Wire Line
-	6300 4400 5800 4400
 $Comp
 L power:GND #PWR0113
 U 1 1 5FFADC5E
-P 5800 4500
-F 0 "#PWR0113" H 5800 4250 50  0001 C CNN
-F 1 "GND" H 5805 4327 50  0000 C CNN
-F 2 "" H 5800 4500 50  0001 C CNN
-F 3 "" H 5800 4500 50  0001 C CNN
-	1    5800 4500
+P 7550 4200
+F 0 "#PWR0113" H 7550 3950 50  0001 C CNN
+F 1 "GND" H 7555 4027 50  0000 C CNN
+F 2 "" H 7550 4200 50  0001 C CNN
+F 3 "" H 7550 4200 50  0001 C CNN
+	1    7550 4200
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	5800 4400 5800 4500
-Text Label 5800 3100 0    50   ~ 0
-A15
-Text Label 5800 3200 0    50   ~ 0
-A12
-Text Label 5800 3300 0    50   ~ 0
-A7
-Text Label 5800 3400 0    50   ~ 0
-A6
-Text Label 5800 3500 0    50   ~ 0
-A5
-Text Label 5800 3600 0    50   ~ 0
-A4
-Text Label 5800 3700 0    50   ~ 0
-A3
-Text Label 5800 3800 0    50   ~ 0
-A2
-Text Label 5800 3900 0    50   ~ 0
-A1
-Text Label 5800 4000 0    50   ~ 0
-A0
-Text Label 5800 4100 0    50   ~ 0
-D0
-Text Label 5800 4200 0    50   ~ 0
-D1
-Text Label 5800 4300 0    50   ~ 0
-D2
-Text Label 7200 4400 2    50   ~ 0
-D3
-Text Label 7200 4300 2    50   ~ 0
-D4
-Text Label 7200 4200 2    50   ~ 0
-D5
-Text Label 7200 4100 2    50   ~ 0
-D6
-Text Label 7200 4000 2    50   ~ 0
-D7
-Text Label 7200 3900 2    50   ~ 0
-~DIR_CE
-Text Label 7200 3800 2    50   ~ 0
-A10
-Text Label 7200 3700 2    50   ~ 0
-~OE
-Text Label 7200 3600 2    50   ~ 0
-A11
-Text Label 7200 3500 2    50   ~ 0
-A9
-Text Label 7200 3400 2    50   ~ 0
-A8
-Text Label 7200 3300 2    50   ~ 0
-A13
-Text Label 7200 3200 2    50   ~ 0
-A14
 $Comp
 L Device:LED_Small D1
 U 1 1 601944B8
@@ -962,4 +843,182 @@ F 3 "" H 2250 3000 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	1950 3000 2250 3000
+$Comp
+L Connector_Generic:Conn_02x20_Odd_Even J5
+U 1 1 5FFBAEB6
+P 6650 4000
+F 0 "J5" H 6700 5117 50  0000 C CNN
+F 1 "ROM Lines" H 6700 5026 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x20_P2.54mm_Vertical" H 6650 4000 50  0001 C CNN
+F 3 "~" H 6650 4000 50  0001 C CNN
+	1    6650 4000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7550 4100 7550 4200
+$Comp
+L power:GND #PWR?
+U 1 1 60054FB5
+P 5900 4200
+F 0 "#PWR?" H 5900 3950 50  0001 C CNN
+F 1 "GND" H 5905 4027 50  0000 C CNN
+F 2 "" H 5900 4200 50  0001 C CNN
+F 3 "" H 5900 4200 50  0001 C CNN
+	1    5900 4200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5900 4100 5900 4200
+Wire Wire Line
+	6950 4000 7450 4000
+Text Label 7450 4000 2    50   ~ 0
+A18
+Wire Wire Line
+	6950 3100 7450 3100
+Wire Wire Line
+	6950 3200 7450 3200
+Wire Wire Line
+	6950 3300 7450 3300
+Wire Wire Line
+	6950 3400 7450 3400
+Wire Wire Line
+	6950 3500 7450 3500
+Wire Wire Line
+	6950 3600 7450 3600
+Wire Wire Line
+	6950 3700 7450 3700
+Wire Wire Line
+	6950 3800 7450 3800
+Wire Wire Line
+	6950 3900 7450 3900
+Wire Wire Line
+	6950 4100 7550 4100
+Wire Wire Line
+	6950 4200 7450 4200
+Wire Wire Line
+	6950 4300 7450 4300
+Wire Wire Line
+	6950 4400 7450 4400
+Wire Wire Line
+	6950 4500 7450 4500
+Wire Wire Line
+	6950 4600 7450 4600
+Wire Wire Line
+	6950 4700 7450 4700
+Wire Wire Line
+	6950 4800 7450 4800
+Wire Wire Line
+	6950 4900 7450 4900
+Text Label 7450 3100 2    50   ~ 0
+A8
+Text Label 7450 3200 2    50   ~ 0
+A9
+Text Label 7450 3300 2    50   ~ 0
+A10
+Text Label 7450 3400 2    50   ~ 0
+A11
+Text Label 7450 3500 2    50   ~ 0
+A12
+Text Label 7450 3600 2    50   ~ 0
+A13
+Text Label 7450 3700 2    50   ~ 0
+A14
+Text Label 7450 3800 2    50   ~ 0
+A15
+Text Label 7450 3900 2    50   ~ 0
+A16
+Wire Wire Line
+	6450 3100 6000 3100
+Wire Wire Line
+	6450 3200 6000 3200
+Wire Wire Line
+	6450 3300 6000 3300
+Wire Wire Line
+	6450 3400 6000 3400
+Wire Wire Line
+	6450 3500 6000 3500
+Wire Wire Line
+	6450 3600 6000 3600
+Wire Wire Line
+	6450 3700 6000 3700
+Wire Wire Line
+	6450 3800 6000 3800
+Wire Wire Line
+	6450 3900 6000 3900
+Wire Wire Line
+	6450 4000 6000 4000
+Wire Wire Line
+	6450 4200 6000 4200
+Wire Wire Line
+	6450 4300 6000 4300
+Wire Wire Line
+	6450 4400 6000 4400
+Wire Wire Line
+	6450 4500 6000 4500
+Wire Wire Line
+	6450 4600 6000 4600
+Wire Wire Line
+	6450 4700 6000 4700
+Wire Wire Line
+	6450 4800 6000 4800
+Wire Wire Line
+	6450 4900 6000 4900
+Wire Wire Line
+	6450 5000 6000 5000
+Text Label 6000 3100 0    50   ~ 0
+A17
+Text Label 6000 3200 0    50   ~ 0
+A7
+Text Label 6000 3300 0    50   ~ 0
+A6
+Text Label 6000 3400 0    50   ~ 0
+A5
+Text Label 6000 3500 0    50   ~ 0
+A4
+Text Label 6000 3600 0    50   ~ 0
+A3
+Text Label 6000 3700 0    50   ~ 0
+A2
+Text Label 6000 3800 0    50   ~ 0
+A1
+Text Label 6000 3900 0    50   ~ 0
+A0
+Text Label 6000 4000 0    50   ~ 0
+~DIR_CE
+Wire Wire Line
+	5900 4100 6450 4100
+Text Label 6000 4200 0    50   ~ 0
+~OE
+Text Label 6000 4300 0    50   ~ 0
+D0
+Text Label 6000 4400 0    50   ~ 0
+D8
+Text Label 6000 4500 0    50   ~ 0
+D1
+Text Label 6000 4600 0    50   ~ 0
+D9
+Text Label 6000 4700 0    50   ~ 0
+D2
+Text Label 6000 4800 0    50   ~ 0
+D10
+Text Label 6000 4900 0    50   ~ 0
+D3
+Text Label 6000 5000 0    50   ~ 0
+D11
+Text Label 7450 4900 2    50   ~ 0
+D4
+Text Label 7450 4800 2    50   ~ 0
+D12
+Text Label 7450 4700 2    50   ~ 0
+D5
+Text Label 7450 4600 2    50   ~ 0
+D13
+Text Label 7450 4500 2    50   ~ 0
+D6
+Text Label 7450 4400 2    50   ~ 0
+D14
+Text Label 7450 4300 2    50   ~ 0
+D7
+Text Label 7450 4200 2    50   ~ 0
+D15
 $EndSCHEMATC
