@@ -157,7 +157,7 @@ void remote_control(void) {
                 case CMD_READ: {
                         if(rwsw_state || iosw_state) uart_puts(CMD_INVALID); // Must be internal with write disabled
                         else {
-                            sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
+                            sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
                             ioutils_setSRAM_CE(0); // Enable the SRAM
                             _delay_us(1);
                             uint16_t data = piso_shifter_get();
@@ -217,7 +217,7 @@ void remote_control(void) {
                             else {
                                 uint16_t data = strutils_str_to_u16(pkt_buffer+2);
                                 data_to_sipo_buffer(data);
-                                sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
+                                sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
                                 ioutils_setSRAM_CE(0); // Enable the SRAM
                                 _delay_us(1);
                                 ioutils_setSRAM_CE(1); // Disable the SRAM
@@ -359,7 +359,7 @@ static void restore_defaults(void) {
     ioutils_setSRAM_WE(1); // Disable /WE on the SRAMs: read mode
     ioutils_setSRAM_OE(0); // Enable /OE on the SRAMs
     
-    sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE); // Start with everything at 0, address and data
+    sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE); // Start with everything at 0, address and data
 
     sipo_shifter_OE(0); // Enable the outputs of the SIPO shifters
     ioutils_setRESET(0); // Disable the external reset line     
@@ -380,7 +380,7 @@ static uint8_t test_sram(void) {
         ioutils_setLED(1);
         address_to_sipo_buffer(addr);
         data_to_sipo_buffer(0xAA55);
-        sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
+        sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _delay_us(0.1);
         ioutils_setSRAM_CE(1); // Disable the SRAM
@@ -393,7 +393,7 @@ static uint8_t test_sram(void) {
         wdt_reset();
         ioutils_setLED(1);
         address_to_sipo_buffer(addr);
-        sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
+        sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _delay_us(0.1);
         data = piso_shifter_get();
@@ -415,7 +415,7 @@ static uint8_t test_sram(void) {
         ioutils_setLED(1);
         address_to_sipo_buffer(addr);
         data_to_sipo_buffer(0x55AA);
-        sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
+        sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _delay_us(0.1);
         ioutils_setSRAM_CE(1); // Disable the SRAM
@@ -429,7 +429,7 @@ static uint8_t test_sram(void) {
         wdt_reset();
         ioutils_setLED(1);
         address_to_sipo_buffer(addr);
-        sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
+        sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _delay_us(0.1);
         data = piso_shifter_get();
@@ -450,7 +450,7 @@ static uint8_t test_sram(void) {
         ioutils_setLED(1);
         address_to_sipo_buffer(addr);
         data_to_sipo_buffer(addr & 0xFFFF);
-        sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
+        sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _delay_us(0.1);
         ioutils_setSRAM_CE(1); // Disable the SRAM
@@ -464,7 +464,7 @@ static uint8_t test_sram(void) {
         wdt_reset();
         ioutils_setLED(1);
         address_to_sipo_buffer(addr);
-        sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
+        sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _delay_us(0.1);
         data = piso_shifter_get();

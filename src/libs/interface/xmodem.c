@@ -152,7 +152,7 @@ static void xmodem_upload_packet(XMODEM_Dump_Type dtype) {
                 break;
         }
 
-        sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
+        sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _delay_us(0.1);
         ioutils_setSRAM_CE(1); // Disable the SRAM

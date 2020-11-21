@@ -2,6 +2,8 @@
 
 #include <string.h>
 
+static uint8_t sipo_buffer[SIPO_BUFFER_SIZE];
+
 void clear_sipo_buffer(void) {
     memset(sipo_buffer, 0, SIPO_BUFFER_SIZE);
 }
@@ -26,4 +28,8 @@ void address_to_sipo_buffer(uint32_t address) {
         // The first 21 bits (0-20) in the buffer are for data lines and unused pins
         sipo_buffer[(21 + bit_cnt)/8] |= ((address >> idx) & 0x01) << ((21 + bit_cnt) % 8);
     }
+}
+
+uint8_t *get_sipo_buffer(void) {
+    return sipo_buffer;
 }
