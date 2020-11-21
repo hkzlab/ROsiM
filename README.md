@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The ROsiM is a ROM simulation / emulation board: it uses ywo 512k/8bit SRAM chips to simulate an 8/16 bit ROM (up to 512k bytes or 512k words in size).
+The ROsiM is a ROM simulation / emulation board: it uses two 512k/8bit SRAM chips to simulate an 8 or 16 bit ROM (up to 512k bytes or 512k words in size).
 
 The board is based around an ATMega328P chip @20Mhz, controlled via RS232 connection.
 
