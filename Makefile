@@ -41,7 +41,7 @@ F_CPU = 20000000
 FORMAT = ihex
 
 # Target file name (without extension).
-TARGET = out/DuPAL
+TARGET = out/ROsiM
 
 # List C source files here. (C dependencies are automatically generated.)
 SRC = src/main.c src/libs/ioutils/mcu_io.c src/libs/uart/uart.c src/libs/utils/strutils.c src/libs/shifter/sipo_shifter.c \
