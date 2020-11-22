@@ -365,12 +365,6 @@ Wire Wire Line
 	9950 5500 9550 5500
 Wire Wire Line
 	9950 5600 9550 5600
-Wire Wire Line
-	9950 5700 9550 5700
-Wire Wire Line
-	9950 5800 9550 5800
-Wire Wire Line
-	9950 5900 9550 5900
 Text Label 9550 4100 0    50   ~ 0
 A0
 Text Label 9550 4200 0    50   ~ 0
@@ -962,4 +956,29 @@ F 3 "" H 2250 3000 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	1950 3000 2250 3000
+$Comp
+L power:GND #PWR?
+U 1 1 5FBD02DE
+P 9350 6100
+F 0 "#PWR?" H 9350 5850 50  0001 C CNN
+F 1 "GND" H 9355 5927 50  0000 C CNN
+F 2 "" H 9350 6100 50  0001 C CNN
+F 3 "" H 9350 6100 50  0001 C CNN
+	1    9350 6100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9350 5700 9350 5800
+Wire Wire Line
+	9350 5700 9950 5700
+Wire Wire Line
+	9350 5800 9950 5800
+Connection ~ 9350 5800
+Wire Wire Line
+	9350 5800 9350 5900
+Wire Wire Line
+	9350 5900 9950 5900
+Connection ~ 9350 5900
+Wire Wire Line
+	9350 5900 9350 6100
 $EndSCHEMATC
