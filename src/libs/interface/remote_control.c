@@ -75,8 +75,10 @@ void remote_control(void) {
                         uart_puts(RESP_MODEL);
                     }
                     break;
-                case CMD_RESET:
-                    while(1); // Will reset the program via watchdog
+                case CMD_RESET: {
+                        restore_defaults(); // So we'll force the board in a safe state
+                        while(1); // Will reset the program via watchdog
+                    }
                 case CMD_RWSW: {
                         uint8_t buf_idx = 0;
                         resp_buffer[buf_idx++] = '[';
