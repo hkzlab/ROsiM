@@ -130,7 +130,7 @@ The SRAM must be in READ mode and the board switched to INTERNAL, otherwise the 
 - Syntax: `>E y<` where `y` can be `0` or `1`
 - Response: `[E y]`
 
-Enables (`0`) or disables (`1`) the external RESET signal to the target board.
+Enables (`1`) or disables (`0`) the external RESET signal to the target board.
 
 #### INTERNAL/EXTERNAL SWITCH
 
@@ -148,6 +148,14 @@ Sets the board to INTERNAL (`1`) or EXTERNAL (`0`) mode. EXTERNAL mode will enab
 To execute this command, the board must be in INTERNAL mode, otherwise the response `CMD_INV` will be sent.
 Sets the SRAM to READ (`1`) or WRITE (`0`) mode.
 
+#### EXTERNAL RESET TYPE
+
+- Syntax: `>I y<` where `y` can be `0` or `1`
+- Response: `[I y]`
+
+If `0` is sent, the board will use the external `/RESET` signal to reset the target board.
+If set to `1`, the board will toggle the `RESET` signal instead.
+
 #### VIEW
 
 - Syntax: `>V<`
@@ -158,6 +166,7 @@ This command will print out the current address in hex format (`00xxxxxx`) and a
 - bit 0: INTERNAL/EXTERNAL state
 - bit 1: READ/WRITE state
 - bit 2: EXTERNAL RESET state
+- bit 3: EXTERNAL RESET type. 0 -> /RESET, 1 -> RESET
 
 #### DEFAULTS
 
@@ -169,6 +178,8 @@ Will revert the board state to the following state:
 - INTERNAL
 - SRAM in READ mode
 - EXTERNAL RESET disabled
+
+The selection of the EXTERNAL RESET logic will **NOT** be restored by this command and will remain set to the current state.
 
 #### TEST
 

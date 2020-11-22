@@ -21,7 +21,7 @@
 #include <shifter/piso_shifter.h>
 
 
-#define VERSION "0.0.2"
+#define VERSION "0.0.3"
 #define SOFT_HEADER "\nROsiM - " VERSION "\n\n"
 
 int main(void) {
