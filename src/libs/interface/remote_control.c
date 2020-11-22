@@ -56,7 +56,7 @@ static uint32_t address = 0;
 
 static uint8_t receive_pkt(void);
 
-static void restore_defaults(void);
+static void restore_defaults(uint8_t reset); // Restores all the IOs to defaults, except the /RESET signal (unless reset is 1)
 static uint8_t test_sram(void);
 static void format_test_error(char *buf, uint32_t addr, uint16_t data);
 static void set_external_reset(uint8_t state);
@@ -65,7 +65,7 @@ void remote_control(void) {
     clear_sipo_buffer();
 
     // Setting up the initial state
-    restore_defaults();
+    restore_defaults(1);
 
     uart_puts("REMOTE_CONTROL_ENABLED\n");
 
@@ -79,7 +79,7 @@ void remote_control(void) {
                     }
                     break;
                 case CMD_RESET: {
-                        restore_defaults(); // So we'll force the board in a safe state
+                        restore_defaults(1); // So we'll force the board in a safe state
                         while(1); // Will reset the program via watchdog
                     }
                 case CMD_RWSW: {
@@ -204,9 +204,7 @@ void remote_control(void) {
                     }
                     break;
                 case CMD_XMODEM: {
-                        uint8_t bak_erst_state = erst_state; // Backup the reset state
-                        restore_defaults(); // Reset everything back to default
-                        set_external_reset(bak_erst_state); // Restore the previous reset state
+                        restore_defaults(0); // Reset everything back to default
                         _delay_us(100);
                         ioutils_setSRAM_WE(0); // Enable write mode 
 
@@ -221,7 +219,7 @@ void remote_control(void) {
                                 break;
                         }
 
-                        restore_defaults(); // Defaults again
+                        restore_defaults(0); // Defaults again
                         _delay_us(100);
 
                         uart_putchar('\n');
@@ -296,7 +294,7 @@ void remote_control(void) {
                     }
                     break;
                 case CMD_DEFAULT: {
-                        restore_defaults();
+                        restore_defaults(1);
 
                         uint8_t buf_idx = 0;
                         resp_buffer[buf_idx++] = '[';
@@ -309,9 +307,9 @@ void remote_control(void) {
                     }
                     break;
                 case CMD_TEST: {
-                        restore_defaults();
+                        restore_defaults(1);
                         uint8_t status =  test_sram();
-                        restore_defaults();
+                        restore_defaults(1);
 
                         uint8_t buf_idx = 0;
                         resp_buffer[buf_idx++] = '[';
@@ -369,12 +367,11 @@ static uint8_t receive_pkt(void) {
     }
 }
 
-static void restore_defaults(void) {
+static void restore_defaults(uint8_t reset) {
     // Resetting the default state
 
     iosw_state = 0; // 0 -> internal, 1 -> external
     rwsw_state = 0; // 0 -> read, 1 -> write
-    erst_state = 0; // 0 -> inactive, 1 -> active
     address = 0;
 
     clear_sipo_buffer();
@@ -388,7 +385,11 @@ static void restore_defaults(void) {
     sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE); // Start with everything at 0, address and data
 
     sipo_shifter_OE(0); // Enable the outputs of the SIPO shifters
-    ioutils_setRESET(0); // Disable the external reset line     
+    
+    if(reset) {
+        erst_state = 0; // 0 -> inactive, 1 -> active
+        ioutils_setRESET(0); // Disable the external reset line
+    }
 }
 
 static uint8_t test_sram(void) {
