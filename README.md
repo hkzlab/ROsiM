@@ -6,7 +6,7 @@ The ROsiM is a ROM simulation / emulation board: it uses two 512k/8bit SRAM chip
 
 The board is based around an ATMega328P chip @20Mhz, controlled via RS232 connection.
 
-![Rev. 1.1 PCB](pics/rev_11_pcb.png)
+![Rev. 1.2 PCB](pics/rev_12_pcb.png)
 
 I made this out of my personal need of a simple way to quickly test ROM images on boards I repair/hack/build. Often, these boards use big 16bit EPROMs and the projects I found around did not cater to my needs.
 
@@ -14,7 +14,7 @@ The idea is to use this bare board and then "pods" that attach to the two 40pin 
 
 **WARNING:** While I might help you with quick questions, there is NOT going to be hand-holding for this one.
 
-**WARNING 2:** The gerbers included in this repository are for revision 1.1 of the board. It has minor fixes in respect to the revision 1.0 that I am testing (components placement, plus a RESET line in addition to /RESET). These should not break any functionality, but be advised that I have yet to do a production run of 1.1 boards.
+**Caveat Emptor!** The gerbers included in this repository are for revision 1.2 of the board. It has minor fixes and additions in respect to the revision 1.0 that I am testing (components placement, plus a RESET line in addition to /RESET). These should not break any functionality, but be advised that I have yet to do a production run of 1.2 boards.
 
 ## Board
 
@@ -147,14 +147,6 @@ Sets the board to INTERNAL (`1`) or EXTERNAL (`0`) mode. EXTERNAL mode will enab
 
 To execute this command, the board must be in INTERNAL mode, otherwise the response `CMD_INV` will be sent.
 Sets the SRAM to READ (`1`) or WRITE (`0`) mode.
-
-#### EXTERNAL RESET TYPE
-
-- Syntax: `>I y<` where `y` can be `0` or `1`
-- Response: `[I y]`
-
-If `0` is sent, the board will use the external `/RESET` signal to reset the target board.
-If set to `1`, the board will toggle the `RESET` signal instead.
 
 #### VIEW
 
