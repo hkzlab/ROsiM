@@ -158,7 +158,6 @@ This command will print out the current address in hex format (`00xxxxxx`) and a
 - bit 0: INTERNAL/EXTERNAL state
 - bit 1: READ/WRITE state
 - bit 2: EXTERNAL RESET state
-- bit 3: EXTERNAL RESET type. 0 -> /RESET, 1 -> RESET
 
 #### DEFAULTS
 

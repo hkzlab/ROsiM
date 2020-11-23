@@ -32,7 +32,6 @@
 #define CMD_ERST    'E' // Enables or disables the internal reset
 #define CMD_IOSW    'S' // Switches SRAM access between internal/external
 #define CMD_RWSW    'X' // Switches SRAM between Write and Read mode (when in internal access)
-#define CMD_RSTINV  'I' // Inverts the reset logic
 
 #define CMD_VIEW    'V' // Returns current state
 #define CMD_DEFAULT 'D' // Set everything back to defaults, except for the reset logic inversion
@@ -50,7 +49,6 @@ static char resp_buffer[PKT_BUFFER_SIZE];
 static uint8_t iosw_state = 0; // 0 -> internal, 1 -> external
 static uint8_t rwsw_state = 0; // 0 -> read, 1 -> write
 static uint8_t erst_state = 0; // 0 -> inactive, 1 -> active
-static uint8_t erst_invert = 0; // 0 -> use /RESET, 1 -> use RESET
 static uint32_t address = 0;
 
 
@@ -119,27 +117,6 @@ void remote_control(void) {
                             uart_puts(resp_buffer);
                         } else if (pkt_buffer[2] == '1') { // Reset enabled
                             set_external_reset(1);
-                            uart_puts(resp_buffer);
-                        } else uart_puts(CMD_ERROR); 
-                    }
-                    break;
-                case CMD_RSTINV: {
-                        uint8_t buf_idx = 0;
-                        resp_buffer[buf_idx++] = '[';
-                        resp_buffer[buf_idx++] = CMD_RSTINV;
-                        resp_buffer[buf_idx++] = ' ';
-                        resp_buffer[buf_idx++] = pkt_buffer[2];
-                        resp_buffer[buf_idx++] = ']';
-                        resp_buffer[buf_idx++] = '\n';
-                        resp_buffer[buf_idx++] = 0;
-
-                        if (pkt_buffer[2] == '0') { // use /RESET
-                            erst_invert = 0;
-                            set_external_reset(erst_state); // Make sure we keep the reset state up-to-date
-                            uart_puts(resp_buffer);
-                        } else if (pkt_buffer[2] == '1') { // use RESET
-                            erst_invert = 1;
-                            set_external_reset(erst_state); // Make sure we keep the reset state up-to-date
                             uart_puts(resp_buffer);
                         } else uart_puts(CMD_ERROR); 
                     }
@@ -285,7 +262,7 @@ void remote_control(void) {
                         resp_buffer[buf_idx++] = ' ';
                         strutils_u32_to_str(resp_buffer + buf_idx, address); buf_idx += 8;
                         resp_buffer[buf_idx++] = ' ';
-                        strutils_u8_to_str(resp_buffer + buf_idx, (iosw_state | (rwsw_state << 1) | (erst_state << 2) | (erst_invert << 3))); buf_idx += 2;
+                        strutils_u8_to_str(resp_buffer + buf_idx, (iosw_state | (rwsw_state << 1) | (erst_state << 2))); buf_idx += 2;
                         resp_buffer[buf_idx++] = ']';
                         resp_buffer[buf_idx++] = '\n';
                         resp_buffer[buf_idx++] = 0;
@@ -521,6 +498,6 @@ static void format_test_error(char *buf, uint32_t addr, uint16_t data) {
 }
 
 static void set_external_reset(uint8_t state) {
-    ioutils_setRESET(erst_invert ? !state : state);
+    ioutils_setRESET(state);
     erst_state = state;    
 }
