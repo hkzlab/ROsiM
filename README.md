@@ -14,7 +14,9 @@ The idea is to use this bare board and then "pods" that attach to the two 40pin 
 
 **WARNING:** While I might help you with quick questions, there is NOT going to be hand-holding for this one.
 
-**Caveat Emptor!** The gerbers included in this repository are for revision 1.2 of the board. It has minor fixes and additions in respect to the revision 1.0 that I am testing (components placement, plus a RESET line in addition to /RESET). These should not break any functionality, but be advised that I have yet to do a production run of 1.2 boards.
+### Caveat Emptor!
+
+I have currently built and tested revision 1.0 of this board, revision 1.1 onward are work in progress and as of yet untested and unbuilt. I will update this notice once a new design gets tested.
 
 ## Board
 
