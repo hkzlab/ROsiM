@@ -6,7 +6,7 @@ The ROsiM is a ROM simulation / emulation board: it uses two 512k/8bit SRAM chip
 
 The board is based around an ATMega328P chip @20Mhz, controlled via RS232 connection.
 
-![Rev. 1.2 PCB](pics/rev_12_pcb.png)
+![Rev. 1.3 PCB](pics/rev_13_pcb.png)
 
 I made this out of my personal need of a simple way to quickly test ROM images on boards I repair/hack/build. Often, these boards use big 16bit EPROMs and the projects I found around did not cater to my needs.
 
@@ -20,7 +20,7 @@ I have currently built and tested revision 1.0 of this board, revision 1.1 onwar
 
 ## Board
 
-This board is designed around relatively cheap through hole components, and should be buildable by anyone with minimum soldering skills.
+This board is designed around relatively cheap through hole (with a few exceptions) components, and should be buildable by anyone with basic soldering skills.
 
 You'll need a way to program your 328P MCU with the bootloader (you can then load the firmware via serial port).
 

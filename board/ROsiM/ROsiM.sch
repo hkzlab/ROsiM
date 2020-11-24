@@ -3775,10 +3775,8 @@ Wire Wire Line
 Wire Wire Line
 	2750 7150 3500 7150
 Connection ~ 3500 7150
-Text Label 5050 5750 2    50   ~ 0
+Text Label 5450 5750 2    50   ~ 0
 ~RESET
-Wire Wire Line
-	4500 5750 5050 5750
 Wire Wire Line
 	4500 5350 5050 5350
 Wire Wire Line
@@ -4054,4 +4052,19 @@ Wire Wire Line
 	1550 9150 1550 8950
 Connection ~ 1550 8950
 Connection ~ 2150 9150
+$Comp
+L Device:C_Small C29
+U 1 1 633732E4
+P 4850 5750
+F 0 "C29" V 4950 5850 50  0000 C CNN
+F 1 "100nF" V 4950 5600 50  0000 C CNN
+F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 4850 5750 50  0001 C CNN
+F 3 "~" H 4850 5750 50  0001 C CNN
+	1    4850 5750
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4500 5750 4750 5750
+Wire Wire Line
+	4950 5750 5450 5750
 $EndSCHEMATC
