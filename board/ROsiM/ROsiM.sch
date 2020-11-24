@@ -3860,7 +3860,7 @@ F 1 "10uF" V 1800 9250 50  0000 L CNN
 F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm" H 1850 9150 50  0001 C CNN
 F 3 "~" H 1850 9150 50  0001 C CNN
 	1    1850 9150
-	0    1    1    0   
+	0    -1   1    0   
 $EndComp
 Wire Wire Line
 	2600 5450 2600 5350
