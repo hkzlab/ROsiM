@@ -19,7 +19,7 @@ uint16_t piso_shifter_get(void) {
     _delay_us(0.5);
     PISO_PORT |= _BV(PISO_PE); // Disable the inputs
 
-    for(int idx = 0; idx < 16; idx++) {
+    for(uint8_t idx = 0; idx < 16; idx++) {
         _delay_us(0.5);
         PISO_PORT |= _BV(PISO_CLK); // Clock to high, shift out the data
         _delay_us(0.5);
