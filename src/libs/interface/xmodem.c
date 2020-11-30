@@ -5,6 +5,8 @@
 #include <avr/wdt.h>
 #include <util/delay.h>
 
+#include <common/defines.h>
+
 #include <uart/uart.h>
 #include <utils/crc.h>
 #include <utils/millis.h>
@@ -154,7 +156,7 @@ static void xmodem_upload_packet(XMODEM_Dump_Type dtype) {
 
         sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
-        _delay_us(0.1);
+        _NOP();
         ioutils_setSRAM_CE(1); // Disable the SRAM
         
         upload_address++;
