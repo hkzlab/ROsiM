@@ -3,6 +3,8 @@
 #include <util/delay.h>
 #include <mcu_io.h>
 
+#include <common/defines.h>
+
 void piso_shifter_init(void) {
     PISO_PORT |= (_BV(PISO_CE) | _BV(PISO_PE)); // Disable the clock (/CE high) and disable the inputs (/PE high)
     PISO_PORT &= ~(_BV(PISO_CLK) | _BV(PISO_CLR)); // CLK and /CLR to low
@@ -14,15 +16,15 @@ uint16_t piso_shifter_get(void) {
     uint16_t data = 0;
 
     PISO_PORT &= ~(_BV(PISO_CE) | _BV(PISO_PE) | _BV(PISO_CLK)); // Enable the clock and the inputs, set clock to low
-    _delay_us(0.5);
+    _NOP(); _NOP();
     PISO_PORT |= _BV(PISO_CLK); // Clock to high
-    _delay_us(0.5);
+    _NOP(); _NOP();
     PISO_PORT |= _BV(PISO_PE); // Disable the inputs
 
     for(uint8_t idx = 0; idx < 16; idx++) {
-        _delay_us(0.5);
+        _NOP(); _NOP();
         PISO_PORT |= _BV(PISO_CLK); // Clock to high, shift out the data
-        _delay_us(0.5);
+        _NOP(); _NOP();
         data |= (PIND & _BV(PISO_SER)) ? (1 << idx) : 0;
         PISO_PORT &= ~(_BV(PISO_CLK)); // Clock to low
     }

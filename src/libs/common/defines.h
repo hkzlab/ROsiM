@@ -1,7 +1,7 @@
 #ifndef _AVR_DUPAL_DEFINES_
 #define _AVR_DUPAL_DEFINES_
 
-#define _NOP() do { __asm__ __volatile__ ("nop"); } while (0)
+#define _NOP() __asm__ __volatile__ ("nop");
 
 // token pasting
 #define token_paste2_int(x, y) x ## y

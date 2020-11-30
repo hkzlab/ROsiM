@@ -110,6 +110,7 @@ CINCS = -Isrc/libs/ -Isrc/libs/ioutils/ -Isrc/libs/uart/ -Isrc/libs/utils/ -Isrc
 CFLAGS = -g$(DEBUG)
 CFLAGS += $(CDEFS) $(CINCS)
 CFLAGS += -O$(OPT)
+CFLAGS += -mcall-prologues
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -Wall -Wstrict-prototypes
 CFLAGS += -Wa,-adhlns=$(<:.c=.lst)

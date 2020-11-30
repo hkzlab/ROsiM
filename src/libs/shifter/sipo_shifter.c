@@ -22,7 +22,8 @@ void sipo_shifter_set(uint8_t *data, uint8_t len) {
     uint16_t bitCount = 8 * len;
 
     for(uint8_t i = 0; i < bitCount; i++) {
-        if((data[i/8] >> (i%8)) & 0x01) SIPO_PORT_1 |= _BV(SIPO_1_SER); // High
+        // (i >> 3) is equivalent of (i / 8) and (i & 7) is equivalent of (i % 8)
+        if((data[i >> 3] >> (i & 7)) & 0x01) SIPO_PORT_1 |= _BV(SIPO_1_SER); // High
         else SIPO_PORT_1 &= ~(_BV(SIPO_1_SER)); // Low
 
         toggle_SRCLK();
