@@ -40,7 +40,7 @@ This is used for in-circuit programming of the MCU. You won't really use after b
 
 Connect your RS232 cable here, you don't need to invert TX/RX, so a straight-through cable will work.
 
-The Interface runs at 500000bps 8-n-1. The protocol is mainly ASCII based, but meant to be used with an external software.
+The Interface runs at 230400bps 8-n-1. The protocol is mainly ASCII based, but meant to be used with an external software.
 
 #### J3 - Barrel jack for power
 

@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 #ifndef BAUD
-#define BAUD 500000
+#define BAUD 230400
 #endif
 
 #include <util/setbaud.h>
