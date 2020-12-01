@@ -2,6 +2,9 @@
 #define _AVR_DUPAL_DEFINES_
 
 #define _NOP() __asm__ __volatile__ ("nop");
+#define _NNNOP() __asm__ __volatile__ ("nop\n\t" \
+                                     "nop\n\t" \
+                                     "nop\n\t");
 
 // token pasting
 #define token_paste2_int(x, y) x ## y
