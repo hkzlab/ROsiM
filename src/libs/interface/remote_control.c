@@ -160,6 +160,8 @@ void remote_control(void) {
                 case CMD_READ: {
                         if(rwsw_state || iosw_state) uart_puts(CMD_INVALID); // Must be internal with write disabled
                         else {
+                            fill_sipo_buffer(address, 0);
+
                             sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
                             ioutils_setSRAM_CE(0); // Enable the SRAM
                             _NOP();
@@ -167,7 +169,6 @@ void remote_control(void) {
                             ioutils_setSRAM_CE(1); // Disable the SRAM
 
                             address++; address &= 0x7FFFF;
-                            address_to_sipo_buffer(address);
 
                             uint8_t buf_idx = 0;
                             resp_buffer[buf_idx++] = '[';
@@ -219,14 +220,13 @@ void remote_control(void) {
                             if(!rwsw_state || iosw_state) uart_puts(CMD_INVALID);
                             else {
                                 uint16_t data = strutils_str_to_u16(pkt_buffer+2);
-                                data_to_sipo_buffer(data);
+                                fill_sipo_buffer(address, data);
                                 sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
                                 ioutils_setSRAM_CE(0); // Enable the SRAM
                                 _NOP();
                                 ioutils_setSRAM_CE(1); // Disable the SRAM
 
                                 address++; address &= 0x7FFFF;
-                                address_to_sipo_buffer(address);
 
                                 uint8_t buf_idx = 0;
                                 resp_buffer[buf_idx++] = '[';
@@ -243,7 +243,6 @@ void remote_control(void) {
                     break;
                 case CMD_ADDRESS: {
                         address = strutils_str_to_u32(pkt_buffer+2); address &= 0x7FFFF;
-                        address_to_sipo_buffer(address);
 
                         uint8_t buf_idx = 0;
                         resp_buffer[buf_idx++] = '[';
@@ -384,8 +383,7 @@ static uint8_t test_sram(void) {
     for(uint32_t addr = 0; addr <= 0x7FFFF; addr++) {
         wdt_reset();
         ioutils_setLED(1);
-        address_to_sipo_buffer(addr);
-        data_to_sipo_buffer(0xAA55);
+        fill_sipo_buffer(addr, 0xAA55);
         sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _NOP();
@@ -398,7 +396,7 @@ static uint8_t test_sram(void) {
     for(uint32_t addr = 0; addr <= 0x7FFFF; addr++) {
         wdt_reset();
         ioutils_setLED(1);
-        address_to_sipo_buffer(addr);
+        fill_sipo_buffer(addr, 0);
         sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _NOP();
@@ -419,8 +417,7 @@ static uint8_t test_sram(void) {
     for(uint32_t addr = 0; addr <= 0x7FFFF; addr++) {
         wdt_reset();
         ioutils_setLED(1);
-        address_to_sipo_buffer(addr);
-        data_to_sipo_buffer(0x55AA);
+        fill_sipo_buffer(addr, 0x55AA);
         sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _NOP();
@@ -434,7 +431,7 @@ static uint8_t test_sram(void) {
     for(uint32_t addr = 0; addr <= 0x7FFFF; addr++) {
         wdt_reset();
         ioutils_setLED(1);
-        address_to_sipo_buffer(addr);
+        fill_sipo_buffer(addr, 0);
         sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _NOP();
@@ -443,7 +440,8 @@ static uint8_t test_sram(void) {
         ioutils_setLED(0);
         if(data != 0x55AA) {
             format_test_error(resp_buffer, addr, data);
-            return 2;
+            uart_puts(resp_buffer);
+            return 1;
         }
     }
     
@@ -454,8 +452,7 @@ static uint8_t test_sram(void) {
     for(uint32_t addr = 0; addr <= 0x7FFFF; addr++) {
         wdt_reset();
         ioutils_setLED(1);
-        address_to_sipo_buffer(addr);
-        data_to_sipo_buffer(addr & 0xFFFF);
+        fill_sipo_buffer(addr, addr & 0xFFFF);
         sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _NOP();
@@ -469,7 +466,7 @@ static uint8_t test_sram(void) {
     for(uint32_t addr = 0; addr <= 0x7FFFF; addr++) {
         wdt_reset();
         ioutils_setLED(1);
-        address_to_sipo_buffer(addr);
+        fill_sipo_buffer(addr, 0);
         sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _NOP();

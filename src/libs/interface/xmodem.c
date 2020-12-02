@@ -140,17 +140,16 @@ static void xmodem_upload_packet(XMODEM_Dump_Type dtype) {
     uint8_t incr = (dtype == BIN_8) ? 1 : 2; // Are we using bytes or words?
 
     for(uint8_t idx = 0; idx < XMODEM_DATA_SIZE; idx += incr) {
-        address_to_sipo_buffer(upload_address);
         switch(dtype) {
             default:
             case BIN_8:
-                data_to_sipo_buffer(packet_buf[XMODEM_DATA_OFFSET + idx]);
+                fill_sipo_buffer(upload_address, packet_buf[XMODEM_DATA_OFFSET + idx]);
                 break;
             case BIN_16:
-                data_to_sipo_buffer((((uint16_t)packet_buf[XMODEM_DATA_OFFSET + idx + 1]) << 8) | packet_buf[XMODEM_DATA_OFFSET + idx]);
+                fill_sipo_buffer(upload_address, (((uint16_t)packet_buf[XMODEM_DATA_OFFSET + idx + 1]) << 8) | packet_buf[XMODEM_DATA_OFFSET + idx]);
                 break;
             case BIN_16S:
-                data_to_sipo_buffer((((uint16_t)packet_buf[XMODEM_DATA_OFFSET + idx]) << 8) | packet_buf[XMODEM_DATA_OFFSET + idx + 1]);
+                fill_sipo_buffer(upload_address, (((uint16_t)packet_buf[XMODEM_DATA_OFFSET + idx]) << 8) | packet_buf[XMODEM_DATA_OFFSET + idx + 1]);
                 break;
         }
 

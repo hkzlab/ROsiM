@@ -6,8 +6,7 @@
 #define SIPO_BUFFER_SIZE 5
 
 void clear_sipo_buffer(void);
-void address_to_sipo_buffer(uint32_t address);
-void data_to_sipo_buffer(uint16_t data);
+void fill_sipo_buffer(uint32_t address, uint16_t data);
 uint8_t *get_sipo_buffer(void);
 
 
