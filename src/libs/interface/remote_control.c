@@ -162,7 +162,7 @@ void remote_control(void) {
                         else {
                             fill_sipo_buffer(address, 0);
 
-                            sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
+                            sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
                             ioutils_setSRAM_CE(0); // Enable the SRAM
                             _NOP();
                             uint16_t data = piso_shifter_get();
@@ -221,7 +221,7 @@ void remote_control(void) {
                             else {
                                 uint16_t data = strutils_str_to_u16(pkt_buffer+2);
                                 fill_sipo_buffer(address, data);
-                                sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
+                                sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
                                 ioutils_setSRAM_CE(0); // Enable the SRAM
                                 _NOP();
                                 ioutils_setSRAM_CE(1); // Disable the SRAM
@@ -360,7 +360,7 @@ static void restore_defaults(uint8_t reset) {
     ioutils_setSRAM_WE(1); // Disable /WE on the SRAMs: read mode
     ioutils_setSRAM_OE(0); // Enable /OE on the SRAMs
     
-    sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE); // Start with everything at 0, address and data
+    sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE); // Start with everything at 0, address and data
 
     sipo_shifter_OE(0); // Enable the outputs of the SIPO shifters
     
@@ -384,7 +384,7 @@ static uint8_t test_sram(void) {
         wdt_reset();
         ioutils_setLED(1);
         fill_sipo_buffer(addr, 0xAA55);
-        sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
+        sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _NOP();
         ioutils_setSRAM_CE(1); // Disable the SRAM
@@ -397,7 +397,7 @@ static uint8_t test_sram(void) {
         wdt_reset();
         ioutils_setLED(1);
         fill_sipo_buffer(addr, 0);
-        sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
+        sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _NOP();
         data = piso_shifter_get();
@@ -418,7 +418,7 @@ static uint8_t test_sram(void) {
         wdt_reset();
         ioutils_setLED(1);
         fill_sipo_buffer(addr, 0x55AA);
-        sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
+        sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _NOP();
         ioutils_setSRAM_CE(1); // Disable the SRAM
@@ -432,7 +432,7 @@ static uint8_t test_sram(void) {
         wdt_reset();
         ioutils_setLED(1);
         fill_sipo_buffer(addr, 0);
-        sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
+        sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _NOP();
         data = piso_shifter_get();
@@ -453,7 +453,7 @@ static uint8_t test_sram(void) {
         wdt_reset();
         ioutils_setLED(1);
         fill_sipo_buffer(addr, addr & 0xFFFF);
-        sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
+        sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _NOP();
         ioutils_setSRAM_CE(1); // Disable the SRAM
@@ -467,7 +467,7 @@ static uint8_t test_sram(void) {
         wdt_reset();
         ioutils_setLED(1);
         fill_sipo_buffer(addr, 0);
-        sipo_shifter_set(get_sipo_buffer(), SIPO_BUFFER_SIZE);
+        sipo_shifter_set(sipo_buffer, SIPO_BUFFER_SIZE);
         ioutils_setSRAM_CE(0); // Enable the SRAM
         _NOP();
         data = piso_shifter_get();
