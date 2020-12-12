@@ -585,7 +585,7 @@ Wire Wire Line
 Connection ~ 5300 1350
 Wire Wire Line
 	5300 1350 5300 1450
-Text Label 4750 1350 0    50   ~ 0
+Text Label 4150 1350 0    50   ~ 0
 EXT_VCC
 $Comp
 L Device:R_Small R1
@@ -603,8 +603,6 @@ Wire Wire Line
 Wire Wire Line
 	5150 1650 5150 1350
 Connection ~ 5150 1350
-Wire Wire Line
-	5150 1350 4750 1350
 $Comp
 L power:GND #PWR0109
 U 1 1 5FDA6912
@@ -750,8 +748,8 @@ F 3 "~" H 6500 3700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	6800 3100 7200 3100
-Text Label 7200 3100 2    50   ~ 0
+	7500 3100 7900 3100
+Text Label 7900 3100 2    50   ~ 0
 EXT_VCC
 Wire Wire Line
 	6800 3200 7200 3200
@@ -957,10 +955,10 @@ $EndComp
 Wire Wire Line
 	1950 3000 2250 3000
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0114
 U 1 1 5FBD02DE
 P 9350 6100
-F 0 "#PWR?" H 9350 5850 50  0001 C CNN
+F 0 "#PWR0114" H 9350 5850 50  0001 C CNN
 F 1 "GND" H 9355 5927 50  0000 C CNN
 F 2 "" H 9350 6100 50  0001 C CNN
 F 3 "" H 9350 6100 50  0001 C CNN
@@ -981,4 +979,19 @@ Wire Wire Line
 Connection ~ 9350 5900
 Wire Wire Line
 	9350 5900 9350 6100
+$Comp
+L Diode:BAT48ZFILM D3
+U 1 1 5FD6EBED
+P 7350 3100
+F 0 "D3" H 7350 2883 50  0000 C CNN
+F 1 "BAT48ZFILM" H 7350 2974 50  0000 C CNN
+F 2 "Diode_SMD:D_SOD-123" H 7350 2925 50  0001 C CNN
+F 3 "www.st.com/resource/en/datasheet/bat48.pdf" H 7350 3100 50  0001 C CNN
+	1    7350 3100
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	4150 1350 5150 1350
+Wire Wire Line
+	6800 3100 7200 3100
 $EndSCHEMATC
