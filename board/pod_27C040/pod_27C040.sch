@@ -744,9 +744,7 @@ F 3 "" H 7200 2100 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	7050 2100 7200 2100
-Wire Wire Line
-	4550 3050 4950 3050
-Text Label 4950 3050 2    50   ~ 0
+Text Label 5900 3050 2    50   ~ 0
 EXT_VCC
 Wire Wire Line
 	4050 4550 3550 4550
@@ -977,4 +975,19 @@ Text Label 5100 3250 2    50   ~ 0
 A17
 Text Label 5100 3150 2    50   ~ 0
 A18
+$Comp
+L Diode:BAT48ZFILM D3
+U 1 1 5FD737D6
+P 5150 3050
+F 0 "D3" H 5150 3267 50  0000 C CNN
+F 1 "BAT48ZFILM" H 5150 3176 50  0000 C CNN
+F 2 "Diode_SMD:D_SOD-123" H 5150 2875 50  0001 C CNN
+F 3 "www.st.com/resource/en/datasheet/bat48.pdf" H 5150 3050 50  0001 C CNN
+	1    5150 3050
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	5300 3050 5900 3050
+Wire Wire Line
+	5000 3050 4550 3050
 $EndSCHEMATC
