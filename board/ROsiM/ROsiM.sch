@@ -6,7 +6,7 @@ encoding utf-8
 Sheet 1 1
 Title "ROsiM"
 Date ""
-Rev "1.3"
+Rev "1.4"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -545,8 +545,8 @@ $Comp
 L Device:C_Small C14
 U 1 1 5E8D0A0C
 P 2600 4550
-F 0 "C14" V 2700 4650 50  0000 C CNN
-F 1 "100nF" V 2700 4400 50  0000 C CNN
+F 0 "C14" V 2750 4550 50  0000 C CNN
+F 1 "100nF" V 2500 4550 50  0000 C CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 2600 4550 50  0001 C CNN
 F 3 "~" H 2600 4550 50  0001 C CNN
 	1    2600 4550
@@ -3797,42 +3797,22 @@ F 3 "" H 3800 4900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3800 5050 3800 4900
-$Comp
-L Device:Jumper_NO_Small JP1
-U 1 1 60BD9B01
-P 3600 4850
-F 0 "JP1" V 3650 4750 50  0000 R CNN
-F 1 "VCCIO sel" V 3550 4750 50  0000 R CNN
-F 2 "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm" H 3600 4850 50  0001 C CNN
-F 3 "~" H 3600 4850 50  0001 C CNN
-	1    3600 4850
-	0    1    -1   0   
-$EndComp
-Wire Wire Line
-	3600 5050 3600 4950
+	3800 5050 3800 4950
 Wire Wire Line
 	2900 5350 2800 5350
 Wire Wire Line
 	2800 5350 2800 4550
-Wire Wire Line
-	2800 4550 3600 4550
-Wire Wire Line
-	3600 4550 3600 4750
 $Comp
 L power:+3.3V #PWR0116
 U 1 1 60EB64AB
-P 3600 4450
-F 0 "#PWR0116" H 3600 4300 50  0001 C CNN
-F 1 "+3.3V" H 3615 4623 50  0000 C CNN
-F 2 "" H 3600 4450 50  0001 C CNN
-F 3 "" H 3600 4450 50  0001 C CNN
-	1    3600 4450
+P 2800 4450
+F 0 "#PWR0116" H 2800 4300 50  0001 C CNN
+F 1 "+3.3V" H 2815 4623 50  0000 C CNN
+F 2 "" H 2800 4450 50  0001 C CNN
+F 3 "" H 2800 4450 50  0001 C CNN
+	1    2800 4450
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	3600 4450 3600 4550
-Connection ~ 3600 4550
 Wire Wire Line
 	2700 4550 2800 4550
 Connection ~ 2800 4550
@@ -4067,4 +4047,13 @@ Wire Wire Line
 	4500 5750 4750 5750
 Wire Wire Line
 	4950 5750 5450 5750
+Wire Wire Line
+	2800 4550 2800 4450
+Wire Wire Line
+	3800 4950 3600 4950
+Wire Wire Line
+	3600 4950 3600 5050
+Connection ~ 3800 4950
+Wire Wire Line
+	3800 4950 3800 4900
 $EndSCHEMATC
