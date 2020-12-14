@@ -4,7 +4,7 @@
 
 The ROsiM is a ROM simulation / emulation board: it uses two 512k/8bit SRAM chips to simulate an 8 or 16 bit ROM (up to 512k bytes or 512k words in size).
 
-The board is based around an ATMega328P chip @20Mhz, controlled via RS232 connection.
+The board is based around an ATMega328P chip @20Mhz, controlled via serial connection.
 
 ![Rev. 1.3 PCB](pics/rev_13_pcb.png)
 
@@ -16,7 +16,9 @@ The idea is to use this bare board and then "pods" that attach to the two 40pin 
 
 ### Caveat Emptor!
 
-I have currently built and tested revision 1.0 of this board, revision 1.1 onward are work in progress and as of yet untested and unbuilt. I will update this notice once a new design gets tested.
+I have currently built and tested revision 1.0 of this board. Revision 1.3 is now under test, the following fixes must be implemented to make it usable:
+
+- Wire the VCCIO pad from FT232RL to VCC and do NOT short it to 3.3v. This is already fixed in board rev. 1.4
 
 ## Board
 
