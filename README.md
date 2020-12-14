@@ -38,9 +38,9 @@ I recommend [optiboot](https://github.com/Optiboot/optiboot). Remember to set th
 
 This is used for in-circuit programming of the MCU. You won't really use after burning the bootloader to the chip. You can leave this out if you pre-program the ATMega.
 
-#### J2 - DB9 female - RS232 Serial port
+#### J2 - USB Type B female
 
-Connect your RS232 cable here, you don't need to invert TX/RX, so a straight-through cable will work.
+Connect your USB cable here. It will appear as an FTDI serial port to the host.
 
 The Interface runs at 230400bps 8-n-1. The protocol is mainly ASCII based, but meant to be used with an external software.
 
