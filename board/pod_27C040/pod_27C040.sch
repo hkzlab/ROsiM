@@ -6,7 +6,7 @@ encoding utf-8
 Sheet 1 1
 Title ""
 Date ""
-Rev ""
+Rev "1.1"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -591,8 +591,6 @@ Wire Wire Line
 Connection ~ 5300 1350
 Wire Wire Line
 	5300 1350 5300 1450
-Text Label 4750 1350 0    50   ~ 0
-EXT_VCC
 $Comp
 L Device:R_Small R1
 U 1 1 5FD941FD
@@ -609,8 +607,6 @@ Wire Wire Line
 Wire Wire Line
 	5150 1650 5150 1350
 Connection ~ 5150 1350
-Wire Wire Line
-	5150 1350 4750 1350
 $Comp
 L power:GND #PWR0109
 U 1 1 5FDA6912
@@ -744,8 +740,6 @@ F 3 "" H 7200 2100 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	7050 2100 7200 2100
-Text Label 5900 3050 2    50   ~ 0
-EXT_VCC
 Wire Wire Line
 	4050 4550 3550 4550
 $Comp
@@ -813,49 +807,6 @@ Text Label 5100 3450 2    50   ~ 0
 A13
 Text Label 5100 3350 2    50   ~ 0
 A14
-$Comp
-L Device:LED_Small D1
-U 1 1 601944B8
-P 1550 2550
-F 0 "D1" H 1550 2785 50  0000 C CNN
-F 1 "RED" H 1550 2694 50  0000 C CNN
-F 2 "LED_SMD:LED_1206_3216Metric" V 1550 2550 50  0001 C CNN
-F 3 "~" V 1550 2550 50  0001 C CNN
-	1    1550 2550
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R_Small R2
-U 1 1 6019F326
-P 1850 2550
-F 0 "R2" V 2046 2550 50  0000 C CNN
-F 1 "1k" V 1955 2550 50  0000 C CNN
-F 2 "Resistor_SMD:R_1206_3216Metric" H 1850 2550 50  0001 C CNN
-F 3 "~" H 1850 2550 50  0001 C CNN
-	1    1850 2550
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	1750 2550 1650 2550
-$Comp
-L power:GND #PWR0115
-U 1 1 601B232D
-P 1350 2600
-F 0 "#PWR0115" H 1350 2350 50  0001 C CNN
-F 1 "GND" H 1355 2427 50  0000 C CNN
-F 2 "" H 1350 2600 50  0001 C CNN
-F 3 "" H 1350 2600 50  0001 C CNN
-	1    1350 2600
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	1450 2550 1350 2550
-Wire Wire Line
-	1350 2550 1350 2600
-Wire Wire Line
-	1950 2550 2400 2550
-Text Label 2400 2550 2    50   ~ 0
-EXT_VCC
 $Comp
 L Device:LED_Small D2
 U 1 1 601DEA89
@@ -987,7 +938,48 @@ F 3 "www.st.com/resource/en/datasheet/bat48.pdf" H 5150 3050 50  0001 C CNN
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	5300 3050 5900 3050
-Wire Wire Line
 	5000 3050 4550 3050
+$Comp
+L Device:Polyfuse_Small F1
+U 1 1 600A9122
+P 5550 3050
+F 0 "F1" V 5755 3050 50  0000 C CNN
+F 1 "200mA" V 5664 3050 50  0000 C CNN
+F 2 "Fuse:Fuse_1206_3216Metric" H 5600 2850 50  0001 L CNN
+F 3 "~" H 5550 3050 50  0001 C CNN
+	1    5550 3050
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:VCC #PWR0114
+U 1 1 600E38EB
+P 6050 2950
+F 0 "#PWR0114" H 6050 2800 50  0001 C CNN
+F 1 "VCC" H 6065 3123 50  0000 C CNN
+F 2 "" H 6050 2950 50  0001 C CNN
+F 3 "" H 6050 2950 50  0001 C CNN
+	1    6050 2950
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	6050 3050 6050 2950
+Wire Wire Line
+	5300 3050 5450 3050
+Wire Wire Line
+	5650 3050 6050 3050
+$Comp
+L power:VCC #PWR?
+U 1 1 601891C5
+P 4650 1250
+F 0 "#PWR?" H 4650 1100 50  0001 C CNN
+F 1 "VCC" H 4665 1423 50  0000 C CNN
+F 2 "" H 4650 1250 50  0001 C CNN
+F 3 "" H 4650 1250 50  0001 C CNN
+	1    4650 1250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4650 1250 4650 1350
+Wire Wire Line
+	4650 1350 5150 1350
 $EndSCHEMATC
