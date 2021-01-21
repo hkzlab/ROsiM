@@ -16,9 +16,14 @@ The idea is to use this bare board and then "pods" that attach to the two 40pin 
 
 ### Caveat Emptor!
 
-I have currently built and tested revision 1.0 of this board. Revision 1.3 is now under test, the following fixes must be implemented to make it usable:
+I have currently built and tested revision 1.3 of this board. The following fixes must be implemented to make it usable:
 
 - Wire the VCCIO pad from FT232RL to VCC and do NOT short it to 3.3v. This is already fixed in board rev. 1.4
+
+The following mod is optional but encouraged for safety, and have been implemented for revision 1.4:
+
+- Cut the trace between pin 1 of USB connector (Vcc) and F1, and insert a BAT48 SOD123 diode, cathode towards F1. This will protect your USB port if the board gets externally powered.
+- Lower F1 max current to 200mA
 
 ## Board
 
