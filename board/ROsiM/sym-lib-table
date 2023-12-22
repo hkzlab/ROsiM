@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "ROsiM-rescue")(type "KiCad")(uri "${KIPRJMOD}/ROsiM-rescue.kicad_sym")(options "")(descr ""))
+)
